@@ -5,6 +5,10 @@
 import java.swing.JFrame;
 
 public class SquarePG extends JFrame {
+	public SquarePG() {
+		
+	}
+	
 	public static void main(String args[]) {
 		GameFrame squarePG = new GameFrame();
 		squarePG.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
