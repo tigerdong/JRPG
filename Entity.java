@@ -70,10 +70,15 @@ public class Entity {
 	}
 	
 	//
-	public int getMaxHealth() {}
+	public int getMaxHealth() {
+		return maxHealth;
+	}
 	
 	//
-	public int getMaxMana() {}
+	public int getMaxMana() {
+		return maxMana;
+	
+	}
 	
 	//
 	public void setName(String name) {
@@ -81,14 +86,22 @@ public class Entity {
 	}
 	
 	//
-	public void setMaxHealth(int maxHealth) {}
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;	
+	}
 	
 	//
-	public void setMaxMana(int maxMana) {}
+	public void setMaxMana(int maxMana) {
+		this.maxMana = maxMana;
+	}
 	
 	//
-	public void setDamageMax(int damageMax) {}
+	public void setDamageMax(int damageMax) {
+		this.damageMax = damageMax;
+	}
 	
 	//
-	public void setDamageMin(int damageMin) {}
+	public void setDamageMin(int damageMin) {
+		this. damageMin = damageMin;
+	}
 }
