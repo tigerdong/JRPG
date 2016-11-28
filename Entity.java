@@ -10,6 +10,7 @@ public class Entity {
 	private int maxHealth, currentHealth;
 	private int maxMana, currentMana;
 	private int damageMax, damageMin;
+	private int posX, posY;
 	private random = new Random();
 
 	// Default constructor
@@ -19,15 +20,19 @@ public class Entity {
 		maxMana = 0;
 		damageMax = 0;
 		damageMin = 0;
+		posX = 0;
+		posY = 0;
 	}
 	
 	// Also constructor
-	Entity(String name, int maxHealth, int maxMana, int damageMax, int damageMin) {
+	Entity(String name, int maxHealth, int maxMana, int damageMax, int damageMin, int posX, int posY) {
 		this.name = name;
 		this.maxHealth = maxHealth;
 		this.maxMana = maxMana;
 		this.damageMax = damageMax;
 		this.damageMin = damageMin;
+		this.posX = posX;
+		this.posY = posY;
 	}
 	
 	//
@@ -81,6 +86,16 @@ public class Entity {
 	}
 	
 	//
+	public int getPosX() {
+		return posX;
+	}
+	
+	//
+	public int getPosY() {
+		return posY;
+	}
+	
+	//
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -102,6 +117,16 @@ public class Entity {
 	
 	//
 	public void setDamageMin(int damageMin) {
-		this. damageMin = damageMin;
+		this.damageMin = damageMin;
+	}
+	
+	// 
+	public void setPosX (int posX){
+		this.posX = posX;
+	}
+		
+	//
+	public void setPosY (int posY){
+		this.posY = posY;
 	}
 }
