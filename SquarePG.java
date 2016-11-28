@@ -6,7 +6,7 @@ import java.swing.JFrame;
 
 public class SquarePG extends JFrame {
 	public static void main(String args[]) {
-		GameWindow squarePG = new GameWindow();
+		GameFrame squarePG = new GameFrame();
 		squarePG.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		squarePG.setSize( 1000, 750 );
 		squarePG.setVisible( true );
