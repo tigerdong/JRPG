@@ -3,6 +3,7 @@
 // Description: 
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 
 public class SquarePG extends JFrame {
