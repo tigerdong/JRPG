@@ -6,8 +6,9 @@ import java.awt.*;
 import javax.swing.JFrame;
 
 public class SquarePG extends JFrame {
-	boolean isRunning = true;
-	int fps = 30;
+	private boolean isRunning = true;
+	private int FPS = 30;
+	private int state = 0;
 	
 	public static void main(String args[]) {
 		SquarePG game = new SquarePG();
@@ -28,11 +29,11 @@ public class SquarePG extends JFrame {
 		while(isRunning){
 			long time = System.currentTimeMillis();
 			
-			update();
+			state = update(state);
 			draw();
 			
 			//delay for each frame
-			time = (1000/fps) - (System.currentTimeMillis()-time);
+			time = (1000/FPS) - (System.currentTimeMillis()-time);
 			
 			if (time > 0){
 				try{
@@ -52,8 +53,16 @@ public class SquarePG extends JFrame {
 	}
 	
 	//input check, movement
-	void update(){
-		
+	int update(int state){
+		/*
+		switch (state) {
+			case MENU:
+				break;
+			case COMBAT:
+				break;
+		}
+		*/
+		return state;
 	}
 	
 	//Draws everything
