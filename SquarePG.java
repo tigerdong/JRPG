@@ -40,8 +40,8 @@ public class SquarePG extends JFrame {
 				}
 				catch (Exception e){}
 			}
-			setVisible(false);
 		}
+		setVisible(false);
 	}
 	
 	//initial setup
