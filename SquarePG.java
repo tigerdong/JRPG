@@ -69,7 +69,7 @@ public class SquarePG extends JFrame {
     
     // Input check, movement
     void update() {
-        //gameFrame.repaint();
+        //gameFrame.update();
     }
     
     // Draws everything
