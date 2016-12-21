@@ -26,6 +26,9 @@ public class SquarePG extends JFrame {
     
     // Constructor
     public SquarePG() {
+        super("SquarePG");
+        // set layout here
+        
         FPS = 30;
         state = State.MENU;
         isRunning = true;
@@ -46,8 +49,8 @@ public class SquarePG extends JFrame {
         while(isRunning){
             long time = System.currentTimeMillis();
             
-            state = update(state);
-            draw();
+            update(state);
+            draw(state);
             
             // Delay for each frame
             time = (1000/FPS) - (System.currentTimeMillis()-time);
@@ -63,14 +66,14 @@ public class SquarePG extends JFrame {
     }
     
     // Initial setup
-    void initialize(){
+    void initialize() {
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         setSize( 1000, 750 );
         setVisible( true );
     }
     
     // Input check, movement
-    State update(State state){
+    void update(State state) {
          switch (state) {
              case MENU:
                  break;
@@ -79,11 +82,10 @@ public class SquarePG extends JFrame {
              default:
                  break;
          }
-        return state;
     }
     
     // Draws everything
-    void draw(){
+    void draw(State state) {
          switch (state) {
              case MENU:
                  break;
@@ -95,25 +97,20 @@ public class SquarePG extends JFrame {
     }
     
     // Inner class for handling mouse events
-    private class MouseHandler extends MouseAdapter
-    {
+    private class MouseHandler extends MouseAdapter {
         // Handle event when mouse pressed
-        public void mousePressed(MouseEvent event)
-        {
+        public void mousePressed(MouseEvent event) {
         }
         
         // Handle event when mouse released after dragging
-        public void mouseReleased(MouseEvent event)
-        {
+        public void mouseReleased(MouseEvent event) {
         }
     }
     
     // 
-    private class KeyHandler extends KeyAdapter
-    {
+    private class KeyHandler extends KeyAdapter {
         //
-        public void keyPressed(KeyEvent event)
-        {
+        public void keyPressed(KeyEvent event) {
         }
     }
 }
