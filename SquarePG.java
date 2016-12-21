@@ -7,16 +7,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
 public class SquarePG extends JFrame {
     private boolean isRunning;
     private int FPS;
-    private State state;
-    
-    public enum State {
-        MENU, COMBAT;
-    }
 
     public static void main(String args[]) {
         SquarePG game = new SquarePG();
@@ -27,10 +23,9 @@ public class SquarePG extends JFrame {
     // Constructor
     public SquarePG() {
         super("SquarePG");
-        // set layout here
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
         FPS = 30;
-        state = State.MENU;
         isRunning = true;
         
         MouseHandler mouseHandler = new MouseHandler(); 
@@ -49,8 +44,8 @@ public class SquarePG extends JFrame {
         while(isRunning){
             long time = System.currentTimeMillis();
             
-            update(state);
-            draw(state);
+            update();
+            draw();
             
             // Delay for each frame
             time = (1000/FPS) - (System.currentTimeMillis()-time);
@@ -67,33 +62,19 @@ public class SquarePG extends JFrame {
     
     // Initial setup
     void initialize() {
-        setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        setSize( 1000, 750 );
-        setVisible( true );
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1000, 750);
+        setVisible(true);
     }
     
     // Input check, movement
-    void update(State state) {
-         switch (state) {
-             case MENU:
-                 break;
-             case COMBAT:
-                 break;
-             default:
-                 break;
-         }
+    void update() {
+        //gamePanel.repaint();
     }
     
     // Draws everything
-    void draw(State state) {
-         switch (state) {
-             case MENU:
-                 break;
-             case COMBAT:
-                 break;
-             default:
-                 break;
-         }
+    void draw() {
+        //gamePanel.repaint();
     }
     
     // Inner class for handling mouse events
