@@ -69,12 +69,12 @@ public class SquarePG extends JFrame {
     
     // Input check, movement
     void update() {
-        //gamePanel.repaint();
+        //gameFrame.repaint();
     }
     
     // Draws everything
     void draw() {
-        //gamePanel.repaint();
+        //gameFrame.repaint();
     }
     
     // Inner class for handling mouse events
