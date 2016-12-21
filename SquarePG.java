@@ -2,72 +2,118 @@
 // Date: yes please
 // Description: 
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 
 public class SquarePG extends JFrame {
-	private boolean isRunning = true;
-	private int FPS = 30;
-	private int state = 0;
-	
-	public static void main(String args[]) {
-		SquarePG game = new SquarePG();
-		game.run();
-		System.exit(0);
-	}
-	
-	//Constructor???
-	/*public SquarePG() {
-		
-	}*/
-	
-	//runs game loop
-	public void run(){
-		
-		initialize();
-		
-		while(isRunning){
-			long time = System.currentTimeMillis();
-			
-			state = update(state);
-			draw();
-			
-			//delay for each frame
-			time = (1000/FPS) - (System.currentTimeMillis()-time);
-			
-			if (time > 0){
-				try{
-					Thread.sleep(time);
-				}
-				catch (Exception e){}
-			}
-		}
-		setVisible(false);
-	}
-	
-	//initial setup
-	void initialize(){
-		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-		setSize( 1000, 750 );
-		setVisible( true );
-	}
-	
-	//input check, movement
-	int update(int state){
-		/*
-		switch (state) {
-			case MENU:
-				break;
-			case COMBAT:
-				break;
-		}
-		*/
-		return state;
-	}
-	
-	//Draws everything
-	void draw(){
-			
-	}
+    private boolean isRunning;
+    private int FPS;
+    private State state;
+    
+    public enum State {
+        MENU, COMBAT;
+    }
+
+    public static void main(String args[]) {
+        SquarePG game = new SquarePG();
+        game.run();
+        System.exit(0);
+    }
+    
+    // Constructor
+    public SquarePG() {
+        FPS = 30;
+        state = State.MENU;
+        isRunning = true;
+        
+        MouseHandler mouseHandler = new MouseHandler(); 
+        addMouseListener(mouseHandler); 
+        addMouseMotionListener(mouseHandler);
+        
+        KeyHandler keyHandler = new KeyHandler(); 
+        addKeyListener(keyHandler); 
+    }
+    
+    // Runs game loop
+    public void run(){
+        
+        initialize();
+        
+        while(isRunning){
+            long time = System.currentTimeMillis();
+            
+            state = update(state);
+            draw();
+            
+            // Delay for each frame
+            time = (1000/FPS) - (System.currentTimeMillis()-time);
+            
+            if (time > 0){
+                try{
+                    Thread.sleep(time);
+                }
+                catch (Exception e){}
+            }
+        }
+        setVisible(false);
+    }
+    
+    // Initial setup
+    void initialize(){
+        setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        setSize( 1000, 750 );
+        setVisible( true );
+    }
+    
+    // Input check, movement
+    State update(State state){
+         switch (state) {
+             case MENU:
+                 break;
+             case COMBAT:
+                 break;
+             default:
+                 break;
+         }
+        return state;
+    }
+    
+    // Draws everything
+    void draw(){
+         switch (state) {
+             case MENU:
+                 break;
+             case COMBAT:
+                 break;
+             default:
+                 break;
+         }
+    }
+    
+    // Inner class for handling mouse events
+    private class MouseHandler extends MouseAdapter
+    {
+        // Handle event when mouse pressed
+        public void mousePressed(MouseEvent event)
+        {
+        }
+        
+        // Handle event when mouse released after dragging
+        public void mouseReleased(MouseEvent event)
+        {
+        }
+    }
+    
+    // 
+    private class KeyHandler extends KeyAdapter
+    {
+        //
+        public void keyPressed(KeyEvent event)
+        {
+        }
+    }
 }
