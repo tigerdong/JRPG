@@ -11,7 +11,8 @@ public class SquarePG extends JFrame {
     private JButton playButton = new JButton("Play");
     private JButton optionsButton = new JButton("Options");
     private JButton aboutButton = new JButton("About");
-    private JButton backButton = new JButton("Back");
+    private JButton back1Button = new JButton("Back");
+    private JButton back2Button = new JButton("Back");
     
     //private GamePanel gamePanel;
     //private InteractionsPanel interactionsPanel;
@@ -19,16 +20,11 @@ public class SquarePG extends JFrame {
     private JPanel optionsPanel = new JPanel();
     private JLabel replaceMe = new JLabel("OPTIONS WILL GO HERE ;-)");
     
+    private JPanel aboutPanel = new JPanel();
+    private JLabel aboutLabel = new JLabel("<html><center>ABOUT<br><br>Authors:<br>Tiger Dong, Cathy Hua<br><br>Last Revised:<br>DATE HERE<br><br>Compiler:<br>JDK 1.8.0_101<br><br>Version:<br>Java SE 8</html>");
+    
     private boolean isRunning = false;
     private int FPS = 30;
-    private State state = State.MENU;
-    
-    public enum State {
-        MENU,
-        GAME,
-        OPTIONS,
-        ABOUT;
-    }
 
     public static void main(String args[]) {
         SquarePG game = new SquarePG();
@@ -46,8 +42,10 @@ public class SquarePG extends JFrame {
         playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         optionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         aboutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         replaceMe.setAlignmentX(Component.CENTER_ALIGNMENT);
+        aboutLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        back1Button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        back2Button.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.PAGE_AXIS));
         menuPanel.add(playButton);
@@ -56,7 +54,11 @@ public class SquarePG extends JFrame {
         
         optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
         optionsPanel.add(replaceMe);
-        optionsPanel.add(backButton);
+        optionsPanel.add(back1Button);
+        
+        aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.PAGE_AXIS));
+        aboutPanel.add(aboutLabel);
+        aboutPanel.add(back2Button);
         
         contentPane.add(menuPanel, BorderLayout.CENTER);
         
@@ -64,6 +66,8 @@ public class SquarePG extends JFrame {
         playButton.addActionListener(actionHandler);
         optionsButton.addActionListener(actionHandler);
         aboutButton.addActionListener(actionHandler);
+        back1Button.addActionListener(actionHandler);
+        back2Button.addActionListener(actionHandler);
     }
     
     // Runs game loop
@@ -98,7 +102,6 @@ public class SquarePG extends JFrame {
     private class ActionHandler implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == playButton) {
-                state = State.GAME;
                 isRunning = true;
                 remove(menuPanel);
                 //add(gamePanel, BorderLayout.CENTER);
@@ -108,15 +111,26 @@ public class SquarePG extends JFrame {
                 runGameLoop();
             }
             if (event.getSource() == optionsButton) {
-                state = State.OPTIONS;
                 remove(menuPanel);
                 add(optionsPanel, BorderLayout.CENTER);
                 validate();
                 repaint();
             }
             if (event.getSource() == aboutButton) {
-                state = State.ABOUT;
                 remove(menuPanel);
+                add(aboutPanel, BorderLayout.CENTER);
+                validate();
+                repaint();
+            }
+            if (event.getSource() == back1Button) {
+                remove(optionsPanel);
+                add(menuPanel, BorderLayout.CENTER);
+                validate();
+                repaint();
+            }
+            if (event.getSource() == back2Button) {
+                remove(aboutPanel);
+                add(menuPanel, BorderLayout.CENTER);
                 validate();
                 repaint();
             }
