@@ -52,7 +52,17 @@ public class SquarePG extends JFrame {
     }
     
     // Runs game loop
-    private void run(){
+    private void runGameLoop() {
+        Thread loop = new Thread() {
+            public void run() {
+                gameLoop();
+            }
+        };
+        loop.start();
+    }
+    
+    // Actual game loop
+    private void gameLoop() {
         while(isRunning){
             long time = System.currentTimeMillis();
             //gamePanel.update();
@@ -67,7 +77,6 @@ public class SquarePG extends JFrame {
                 catch (Exception e){}
             }
         }
-        setVisible(false);
     }
     
     // Private inner class for ActionListener event handling
@@ -76,27 +85,20 @@ public class SquarePG extends JFrame {
             if (event.getSource() == playButton) {
                 state = State.GAME;
                 isRunning = true;
+                
                 removeAll();
                 setLayout(new BorderLayout());
                 //add(gamePanel, BorderLayout.CENTER);
                 //add(interactionsPanel, BorderLayout.SOUTH);
                 revalidate();
                 repaint();
-                run();
+                runGameLoop();
             }
             if (event.getSource() == optionsButton) {
                 state = State.OPTIONS;
-                removeAll();
-                // add stuff to container
-                revalidate();
-                repaint();
             }
             if (event.getSource() == aboutButton) {
                 state = State.ABOUT;
-                removeAll();
-                // add stuff to container
-                revalidate();
-                repaint();
             }
         }
     }
