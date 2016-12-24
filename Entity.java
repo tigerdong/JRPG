@@ -51,6 +51,7 @@ public class Entity {
 	//
 	public boolean heal(int amountHealed) {
 		inflict(-amountHealed);
+		return true;
 	}
 	
 	//
