@@ -3,14 +3,18 @@
 // Description: 
 
 import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 public class SquarePG extends JFrame {
+    private JButton playButton;
+    private JButton optionsButton;
+    private JButton aboutButton;
+    //private GameFrame gameFrame;
+    
     private boolean isRunning;
     private int FPS;
     private State state;
@@ -33,16 +37,23 @@ public class SquarePG extends JFrame {
         super("SquarePG");
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
+        playButton = new JButton("Play");
+        optionsButton = new JButton("Options");
+        aboutButton = new JButton("About");
+        //gameFrame = new GameFrame();
+        
+        add(playButton);
+        add(optionsButton);
+        add(aboutButton);
+        
         FPS = 30;
         isRunning = true;
         state = State.MENU;
         
-        MouseHandler mouseHandler = new MouseHandler(); 
-        addMouseListener(mouseHandler); 
-        addMouseMotionListener(mouseHandler);
-        
-        KeyHandler keyHandler = new KeyHandler(); 
-        addKeyListener(keyHandler);
+        ActionHandler actionHandler = new ActionHandler();
+        playButton.addActionListener(actionHandler);
+        optionsButton.addActionListener(actionHandler);
+        aboutButton.addActionListener(actionHandler);
     }
     
     // Runs game loop
@@ -82,7 +93,7 @@ public class SquarePG extends JFrame {
             case MENU:
                 break;
             case GAME:
-                gameFrame.update();
+                // gameFrame.update();
                 
                 break;
             case OPTIONS:
@@ -100,7 +111,7 @@ public class SquarePG extends JFrame {
             case MENU:
                 break;
             case GAME:
-                gameFrame.draw();
+                // gameFrame.draw();
                 
                 break;
             case OPTIONS:
@@ -112,21 +123,22 @@ public class SquarePG extends JFrame {
         }
     }
     
-    // Inner class for handling mouse events
-    private class MouseHandler extends MouseAdapter {
-        // Handle event when mouse pressed
-        public void mousePressed(MouseEvent event) {
-        }
-        
-        // Handle event when mouse released after dragging
-        public void mouseReleased(MouseEvent event) {
+    // private inner class for ActionListener event handling
+    private class ActionHandler implements ActionListener {
+        public void actionPerformed( ActionEvent event ) {
+            if (event.getSource() == playButton) {
+                state = State.GAME;
+                removeAll();
+            }
+            if (event.getSource() == optionsButton) {
+                state = State.OPTIONS;
+                removeAll();
+            }
+            if (event.getSource() == aboutButton) {
+                state = State.ABOUT;
+                removeAll();
+            }
         }
     }
-    
-    // 
-    private class KeyHandler extends KeyAdapter {
-        //
-        public void keyPressed(KeyEvent event) {
-        }
-    }
+            
 }
