@@ -2,9 +2,9 @@ package squarepg;
 
 
 import java.awt.Graphics;
+import javax.swing.JFrame;
 
-
-public class GameFrame {
+public class GameFrame extends JFrame{
     private Entity Hero;
     private gameState state;
     
@@ -18,7 +18,7 @@ public class GameFrame {
         Hero = new Entity ();
     }
     
-    public void isState(gameState state){
+    public void setState(gameState state){
         this.state = state;
     }
     
@@ -48,10 +48,6 @@ public class GameFrame {
         }
     
     }
-    
-    public void repaint(Graphics g){
-        
-    
-    }
+
     
 }
