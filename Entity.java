@@ -12,7 +12,8 @@ public class Entity {
 	private int damageMax, damageMin;
 	private int posX, posY;
 	private random = new Random();
-
+	private ArrayList inventory = new ArrayList();
+	
 	// Default constructor
 	Entity() {
 		name = "Untitled";
