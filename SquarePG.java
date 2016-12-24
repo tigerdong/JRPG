@@ -2,22 +2,20 @@
 // Date: yes please
 // Description: 
 
-import java.awt.Graphics;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class SquarePG extends JFrame {
-    private JButton playButton;
-    private JButton optionsButton;
-    private JButton aboutButton;
-    //private GameFrame gameFrame;
+    private JButton playButton = new JButton("Play");
+    private JButton optionsButton = new JButton("Options");
+    private JButton aboutButton = new JButton("About");
+    //private GamePanel gamePanel;
+    //private InteractionsPanel interactionsPanel;
     
-    private boolean isRunning;
-    private int FPS;
-    private State state;
+    private boolean isRunning = false;
+    private int FPS = 30;
+    private State state = State.MENU;
     
     public enum State {
         MENU,
@@ -28,27 +26,24 @@ public class SquarePG extends JFrame {
 
     public static void main(String args[]) {
         SquarePG game = new SquarePG();
-        game.run();
-        System.exit(0);
+        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        game.setSize(1000, 750);
+        game.setVisible(true);
     }
     
     // Constructor
     public SquarePG() {
         super("SquarePG");
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        Container contentPane = getContentPane();
+        contentPane.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         
-        playButton = new JButton("Play");
-        optionsButton = new JButton("Options");
-        aboutButton = new JButton("About");
-        //gameFrame = new GameFrame();
+        contentPane.add(playButton);
+        contentPane.add(optionsButton);
+        contentPane.add(aboutButton);
         
-        add(playButton);
-        add(optionsButton);
-        add(aboutButton);
-        
-        FPS = 30;
-        isRunning = true;
-        state = State.MENU;
+        playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        optionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        aboutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         ActionHandler actionHandler = new ActionHandler();
         playButton.addActionListener(actionHandler);
@@ -57,16 +52,11 @@ public class SquarePG extends JFrame {
     }
     
     // Runs game loop
-    public void run(){
-        
-        initialize();
-        
+    private void run(){
         while(isRunning){
             long time = System.currentTimeMillis();
-            
-            update();
-            draw();
-            
+            //gamePanel.update();
+            //gamePanel.draw();
             // Delay for each frame
             time = (1000/FPS) - (System.currentTimeMillis()-time);
             
@@ -80,65 +70,34 @@ public class SquarePG extends JFrame {
         setVisible(false);
     }
     
-    // Initial setup
-    void initialize() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 750);
-        setVisible(true);
-    }
-    
-    // Input check, movement
-    void update() {
-        switch (state) {
-            case MENU:
-                break;
-            case GAME:
-                // gameFrame.update();
-                
-                break;
-            case OPTIONS:
-                break;
-            case ABOUT:
-                break;
-            default:
-                break;
-        }
-    }
-    
-    // Draws everything
-    void draw() {
-        switch (state) {
-            case MENU:
-                break;
-            case GAME:
-                // gameFrame.draw();
-                
-                break;
-            case OPTIONS:
-                break;
-            case ABOUT:
-                break;
-            default:
-                break;
-        }
-    }
-    
-    // private inner class for ActionListener event handling
+    // Private inner class for ActionListener event handling
     private class ActionHandler implements ActionListener {
-        public void actionPerformed( ActionEvent event ) {
+        public void actionPerformed(ActionEvent event) {
             if (event.getSource() == playButton) {
                 state = State.GAME;
+                isRunning = true;
                 removeAll();
+                setLayout(new BorderLayout());
+                //add(gamePanel, BorderLayout.CENTER);
+                //add(interactionsPanel, BorderLayout.SOUTH);
+                revalidate();
+                repaint();
+                run();
             }
             if (event.getSource() == optionsButton) {
                 state = State.OPTIONS;
                 removeAll();
+                // add stuff to container
+                revalidate();
+                repaint();
             }
             if (event.getSource() == aboutButton) {
                 state = State.ABOUT;
                 removeAll();
+                // add stuff to container
+                revalidate();
+                repaint();
             }
         }
     }
-            
 }
