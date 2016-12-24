@@ -7,11 +7,17 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class SquarePG extends JFrame {
+    private JPanel menuPanel = new JPanel();
     private JButton playButton = new JButton("Play");
     private JButton optionsButton = new JButton("Options");
     private JButton aboutButton = new JButton("About");
+    private JButton backButton = new JButton("Back");
+    
     //private GamePanel gamePanel;
     //private InteractionsPanel interactionsPanel;
+    
+    private JPanel optionsPanel = new JPanel();
+    private JLabel replaceMe = new JLabel("OPTIONS WILL GO HERE ;-)");
     
     private boolean isRunning = false;
     private int FPS = 30;
@@ -35,15 +41,24 @@ public class SquarePG extends JFrame {
     public SquarePG() {
         super("SquarePG");
         Container contentPane = getContentPane();
-        contentPane.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-        
-        contentPane.add(playButton);
-        contentPane.add(optionsButton);
-        contentPane.add(aboutButton);
+        contentPane.setLayout(new BorderLayout());
         
         playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         optionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         aboutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        replaceMe.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.PAGE_AXIS));
+        menuPanel.add(playButton);
+        menuPanel.add(optionsButton);
+        menuPanel.add(aboutButton);
+        
+        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
+        optionsPanel.add(replaceMe);
+        optionsPanel.add(backButton);
+        
+        contentPane.add(menuPanel, BorderLayout.CENTER);
         
         ActionHandler actionHandler = new ActionHandler();
         playButton.addActionListener(actionHandler);
@@ -85,20 +100,25 @@ public class SquarePG extends JFrame {
             if (event.getSource() == playButton) {
                 state = State.GAME;
                 isRunning = true;
-                
-                removeAll();
-                setLayout(new BorderLayout());
+                remove(menuPanel);
                 //add(gamePanel, BorderLayout.CENTER);
                 //add(interactionsPanel, BorderLayout.SOUTH);
-                revalidate();
+                validate();
                 repaint();
                 runGameLoop();
             }
             if (event.getSource() == optionsButton) {
                 state = State.OPTIONS;
+                remove(menuPanel);
+                add(optionsPanel, BorderLayout.CENTER);
+                validate();
+                repaint();
             }
             if (event.getSource() == aboutButton) {
                 state = State.ABOUT;
+                remove(menuPanel);
+                validate();
+                repaint();
             }
         }
     }
