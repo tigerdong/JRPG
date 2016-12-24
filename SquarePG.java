@@ -13,6 +13,14 @@ import javax.swing.JFrame;
 public class SquarePG extends JFrame {
     private boolean isRunning;
     private int FPS;
+    private State state;
+    
+    public enum State {
+        MENU,
+        GAME,
+        OPTIONS,
+        ABOUT;
+    }
 
     public static void main(String args[]) {
         SquarePG game = new SquarePG();
@@ -27,13 +35,14 @@ public class SquarePG extends JFrame {
         
         FPS = 30;
         isRunning = true;
+        state = State.MENU;
         
         MouseHandler mouseHandler = new MouseHandler(); 
         addMouseListener(mouseHandler); 
         addMouseMotionListener(mouseHandler);
         
         KeyHandler keyHandler = new KeyHandler(); 
-        addKeyListener(keyHandler); 
+        addKeyListener(keyHandler);
     }
     
     // Runs game loop
@@ -69,12 +78,38 @@ public class SquarePG extends JFrame {
     
     // Input check, movement
     void update() {
-        //gameFrame.update();
+        switch (state) {
+            case MENU:
+                break;
+            case GAME:
+                gameFrame.update();
+                
+                break;
+            case OPTIONS:
+                break;
+            case ABOUT:
+                break;
+            default:
+                break;
+        }
     }
     
     // Draws everything
     void draw() {
-        //gameFrame.repaint();
+        switch (state) {
+            case MENU:
+                break;
+            case GAME:
+                gameFrame.draw();
+                
+                break;
+            case OPTIONS:
+                break;
+            case ABOUT:
+                break;
+            default:
+                break;
+        }
     }
     
     // Inner class for handling mouse events
