@@ -60,7 +60,6 @@ public class GamePanel extends JPanel {
         
         toppanel = new JPanel ();
         bottompanel = new JPanel (new BorderLayout());
-        addComponentsToPane (bottompanel, "Status", "Items", "Fight", "Flight", "Defend");
     }
     
     public void setState(gameState state){
