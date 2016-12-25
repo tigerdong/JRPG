@@ -1,10 +1,7 @@
 package squarepg;
 
 
-import java.awt.Graphics;
-import java.awt.Dimension;
-import java.awt.Container;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -13,16 +10,28 @@ import java.awt.event.*;
 
 public class GamePanel extends JPanel {
     private Entity Hero;
-    private gameState state;
+    private Entity Enemy;
+    private gameState state = gameState.CHARACTERSELECTION;
+    
     private JPanel gameScreen;
     private JPanel bottompanel;
     private JPanel toppanel;
+    
     private JButton NButton;
     private JButton WButton;    
     private JButton EButton;
     private JButton SButton;
     private JButton CButton;
-     
+
+    private JLabel nameChoose = new JLabel("Enter Character Name: ");    
+    private JTextField name = new JTextField (20);
+    
+    private JLabel classChoice = new JLabel ("Please choose a class: "); 
+    private JRadioButton warrior = new JRadioButton ("Warrior");
+    private JRadioButton archer = new JRadioButton ("Archer");
+    private JRadioButton mage = new JRadioButton ("Mage");
+    
+    
     public enum gameState {
         CHARACTERSELECTION,
         COMBAT,
@@ -56,9 +65,7 @@ public class GamePanel extends JPanel {
     
     public GamePanel(){
         Hero = new Entity ();
-        gameScreen = new JPanel ();
-        
-        
+        gameScreen = new JPanel (new GridLayout(0, 1));
         toppanel = new JPanel ();
         bottompanel = new JPanel (new BorderLayout());
     }
@@ -71,6 +78,22 @@ public class GamePanel extends JPanel {
         switch (state){
             case CHARACTERSELECTION:
                 
+                ButtonGroup group = new ButtonGroup();
+                group.add(warrior);
+                group.add(archer);
+                group.add(mage);
+                
+                NButton = new JButton ("Enter");
+                NButton.setSize(new Dimension(100, 100));
+                
+                gameScreen.add(nameChoose);
+                gameScreen.add(name);
+                gameScreen.add(classChoice);
+                gameScreen.add(warrior);
+                gameScreen.add(archer);
+                gameScreen.add(mage);
+                gameScreen.add(NButton);
+                
                 
                 break;
             case COMBAT:
@@ -78,6 +101,9 @@ public class GamePanel extends JPanel {
                 //draw the initial top panel
                 gameScreen.add(toppanel);
                 gameScreen.add(bottompanel);
+                
+                //Sample enemy for test purposes
+                Enemy = new Entity("Enemy", 50, 20, 20, 15, 10, 100);
                 
                 CombatAction combatAction = new CombatAction();
                 NButton.addActionListener(combatAction);
@@ -134,19 +160,19 @@ public class GamePanel extends JPanel {
     
     private class CombatAction implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            if (event.getSource() == NButton) {
+            if (event.getSource() == NButton) {//Status? button
                 
             }
-            if (event.getSource() == WButton) {
+            if (event.getSource() == WButton) {// Item button
                 
             }
-            if (event.getSource() == EButton) {
+            if (event.getSource() == EButton) {// Run button
                 
             }
-            if (event.getSource() == CButton){
+            if (event.getSource() == CButton){//Fight button
             
             }
-            if (event.getSource() == SButton){
+            if (event.getSource() == SButton){//Defend button
             
             }
         }
