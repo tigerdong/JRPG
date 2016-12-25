@@ -63,6 +63,42 @@ public class GamePanel extends JPanel {
         panel.add(EButton, BorderLayout.LINE_END);
     }
     
+    
+    public boolean createCharacter (String name, int choosenClass ){
+        Hero.setName(name);
+
+        switch(choosenClass){
+            case 0: // Warrior class
+                Hero.setMaxHealth(300);
+                Hero.setMaxMana(50);
+                Hero.setDamageMax(50);
+                Hero.setDamageMin(40);
+                break;
+                
+            case 1: // Ranger Class
+                Hero.setMaxHealth(200);
+                Hero.setMaxMana(100);
+                Hero.setDamageMax(70);
+                Hero.setDamageMin(60);
+                break;
+                
+            case 2: //Mage Class
+                Hero.setMaxHealth(100);
+                Hero.setMaxMana(300);
+                Hero.setDamageMax(60);
+                Hero.setDamageMin(50);
+                break;
+                
+            default: //Error
+                return false;
+        }
+        
+        Hero.setPosX(0);
+        Hero.setPosY(0);
+        
+        return true;
+    }
+    
     public GamePanel(){
         Hero = new Entity ();
         gameScreen = new JPanel (new GridLayout(0, 1));
