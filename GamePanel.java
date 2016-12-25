@@ -14,6 +14,14 @@ public class SquarePG extends JFrame {
     private JButton back1Button = new JButton("Back");
     private JButton back2Button = new JButton("Back");
     
+    public enum gameState {
+        COMBAT,
+        SHOP,
+        WORLDMAP;
+    } 
+    
+    
+    
     //private GamePanel gamePanel;
     //private InteractionsPanel interactionsPanel;
     
