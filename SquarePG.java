@@ -128,32 +128,20 @@ public class SquarePG extends JFrame {
     private class ActionHandler implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == playButton) {
-                isRunning = true;
                 remove(menuPanel);
                 add(selectionPanel);
-                validate();
-                repaint();
-                runGameLoop();
             } if (event.getSource() == optionsButton) {
                 remove(menuPanel);
                 add(optionsPanel);
-                validate();
-                repaint();
             } if (event.getSource() == aboutButton) {
                 remove(menuPanel);
                 add(aboutPanel);
-                validate();
-                repaint();
             } if (event.getSource() == back1Button) {
                 remove(optionsPanel);
                 add(menuPanel);
-                validate();
-                repaint();
             } if (event.getSource() == back2Button) {
                 remove(aboutPanel);
                 add(menuPanel);
-                validate();
-                repaint();
             } if (event.getSource() == redButton) {
                 playerClass = 0;
                 nameTextField.setEditable(true);
@@ -173,8 +161,12 @@ public class SquarePG extends JFrame {
                 playerName = event.getActionCommand();
                 startButton.setEnabled(true);
             } if (event.getSource() == startButton) {
+                isRunning = true;
                 //gamePanel.functionName(playerName, playerClass);
+                //runGameLoop();
             }
+            validate();
+            repaint();
         }
     }
 }
