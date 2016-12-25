@@ -28,7 +28,7 @@ public class InteractionPanel {
     } 
     
     InteractionPanel(){
-        
+        Interactions = new JPanel (new GridLayout(0, 2));
     
     }
     
