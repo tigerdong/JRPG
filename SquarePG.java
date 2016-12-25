@@ -52,14 +52,6 @@ public class SquarePG extends JFrame {
         Container contentPane = getContentPane();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
         
-        playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        optionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        aboutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        replaceMe.setAlignmentX(Component.CENTER_ALIGNMENT);
-        aboutLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        back1Button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        back2Button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.PAGE_AXIS));
         menuPanel.add(playButton);
         menuPanel.add(optionsButton);
