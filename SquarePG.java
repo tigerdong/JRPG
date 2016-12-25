@@ -23,8 +23,21 @@ public class SquarePG extends JFrame {
     private JPanel aboutPanel = new JPanel();
     private JLabel aboutLabel = new JLabel("<html><center>ABOUT<br><br>Authors:<br>Tiger Dong, Cathy Hua<br><br>Last Revised:<br>DATE HERE<br><br>Compiler:<br>JDK 1.8.0_101<br><br>Version:<br>Java SE 8</html>");
     
+    private JPanel selectionPanel = new JPanel();
+    private JPanel characterPanel = new JPanel();
+    private JPanel namePanel = new JPanel();
+    private JLabel selectionLabel = new JLabel("Yeah, why not?");
+    private JLabel nameLabel = new JLabel("Square's Name:");
+    private JTextField nameTextField = new JTextField(15);
+    private JToggleButton redButton = new JToggleButton("Red");
+    private JToggleButton yellowButton = new JToggleButton("Yellow");
+    private JToggleButton blueButton = new JToggleButton("Blue");
+    private JButton startButton = new JButton("Start!");
+    
     private boolean isRunning = false;
     private int FPS = 30;
+    private int playerClass = 0;
+    private String playerName = "";
 
     public static void main(String args[]) {
         SquarePG game = new SquarePG();
@@ -37,7 +50,7 @@ public class SquarePG extends JFrame {
     public SquarePG() {
         super("SquarePG");
         Container contentPane = getContentPane();
-        contentPane.setLayout(new BorderLayout());
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
         
         playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         optionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -60,7 +73,23 @@ public class SquarePG extends JFrame {
         aboutPanel.add(aboutLabel);
         aboutPanel.add(back2Button);
         
-        contentPane.add(menuPanel, BorderLayout.CENTER);
+        selectionPanel.setLayout(new BoxLayout(selectionPanel, BoxLayout.PAGE_AXIS));
+        characterPanel.setLayout(new BoxLayout(characterPanel, BoxLayout.LINE_AXIS));
+        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.LINE_AXIS));
+        characterPanel.add(redButton);
+        characterPanel.add(yellowButton);
+        characterPanel.add(blueButton);
+        namePanel.add(nameLabel);
+        namePanel.add(nameTextField);
+        selectionPanel.add(selectionLabel);
+        selectionPanel.add(characterPanel);
+        selectionPanel.add(namePanel);
+        selectionPanel.add(startButton);
+        startButton.setEnabled(false);
+        nameTextField.setEditable(false);
+        nameTextField.setMaximumSize(nameTextField.getPreferredSize());
+        
+        contentPane.add(menuPanel);
         
         ActionHandler actionHandler = new ActionHandler();
         playButton.addActionListener(actionHandler);
@@ -68,6 +97,11 @@ public class SquarePG extends JFrame {
         aboutButton.addActionListener(actionHandler);
         back1Button.addActionListener(actionHandler);
         back2Button.addActionListener(actionHandler);
+        redButton.addActionListener(actionHandler);
+        yellowButton.addActionListener(actionHandler);
+        blueButton.addActionListener(actionHandler);
+        startButton.addActionListener(actionHandler);
+        nameTextField.addActionListener(actionHandler);
     }
     
     // Runs game loop
@@ -104,35 +138,50 @@ public class SquarePG extends JFrame {
             if (event.getSource() == playButton) {
                 isRunning = true;
                 remove(menuPanel);
-                //add(gamePanel, BorderLayout.CENTER);
-                //add(interactionsPanel, BorderLayout.SOUTH);
+                add(selectionPanel);
                 validate();
                 repaint();
                 runGameLoop();
-            }
-            if (event.getSource() == optionsButton) {
+            } if (event.getSource() == optionsButton) {
                 remove(menuPanel);
-                add(optionsPanel, BorderLayout.CENTER);
+                add(optionsPanel);
                 validate();
                 repaint();
-            }
-            if (event.getSource() == aboutButton) {
+            } if (event.getSource() == aboutButton) {
                 remove(menuPanel);
-                add(aboutPanel, BorderLayout.CENTER);
+                add(aboutPanel);
                 validate();
                 repaint();
-            }
-            if (event.getSource() == back1Button) {
+            } if (event.getSource() == back1Button) {
                 remove(optionsPanel);
-                add(menuPanel, BorderLayout.CENTER);
+                add(menuPanel);
                 validate();
                 repaint();
-            }
-            if (event.getSource() == back2Button) {
+            } if (event.getSource() == back2Button) {
                 remove(aboutPanel);
-                add(menuPanel, BorderLayout.CENTER);
+                add(menuPanel);
                 validate();
                 repaint();
+            } if (event.getSource() == redButton) {
+                playerClass = 0;
+                nameTextField.setEditable(true);
+                yellowButton.setSelected(false);
+                blueButton.setSelected(false);
+            } if (event.getSource() == yellowButton) {
+                playerClass = 1;
+                nameTextField.setEditable(true);
+                redButton.setSelected(false);
+                blueButton.setSelected(false);
+            } if (event.getSource() == blueButton) {
+                playerClass = 2;
+                nameTextField.setEditable(true);
+                redButton.setSelected(false);
+                yellowButton.setSelected(false);
+            } if (event.getSource() == nameTextField && event.getActionCommand().length() > 0) {
+                playerName = event.getActionCommand();
+                startButton.setEnabled(true);
+            } if (event.getSource() == startButton) {
+                //gamePanel.functionName(playerName, playerClass);
             }
         }
     }
