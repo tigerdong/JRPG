@@ -139,6 +139,15 @@ public class SquarePG extends JFrame {
     // Actual game loop
     private void gameLoop() {
         
+        interactionPanel.init();
+        gamePanel.init();
+        remove(selectionPanel);
+        
+        interactionPanel.setLayout(new GridLayout(0, 2));
+        add(gamePanel);
+        add(interactionPanel);
+        
+        
         while(isRunning){
             long time = System.currentTimeMillis();
             
@@ -196,11 +205,7 @@ public class SquarePG extends JFrame {
                 isRunning = true;
                 gamePanel.createCharacter(playerName, playerClass);
                 
-                remove(selectionPanel);
-                add(gamePanel);
-                add(interactionPanel);
-                
-                //runGameLoop();
+                runGameLoop();
             }
             validate();
             repaint();
