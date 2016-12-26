@@ -36,7 +36,11 @@ public class SquarePG extends JFrame {
     private int FPS = 30;
     private int playerClass = 0;
     private String playerName = "";
-
+    
+    private GamePanel gamePanel = new GamePanel();
+    private InteractionPanel interactionPanel = new InteractionPanel();
+    
+    
     public static void main(String args[]) {
         SquarePG game = new SquarePG();
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -134,8 +138,10 @@ public class SquarePG extends JFrame {
     
     // Actual game loop
     private void gameLoop() {
+        
         while(isRunning){
             long time = System.currentTimeMillis();
+            
             //gamePanel.update();
             //gamePanel.draw();
             // Delay for each frame
@@ -188,7 +194,12 @@ public class SquarePG extends JFrame {
                 startButton.setEnabled(true);
             } if (event.getSource() == startButton) {
                 isRunning = true;
-                //gamePanel.functionName(playerName, playerClass);
+                gamePanel.createCharacter(playerName, playerClass);
+                
+                remove(selectionPanel);
+                add(gamePanel);
+                add(interactionPanel);
+                
                 //runGameLoop();
             }
             validate();
