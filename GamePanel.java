@@ -1,9 +1,4 @@
-package squarepg;
-
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.Set;
@@ -13,8 +8,6 @@ public class GamePanel extends JPanel {
     private Entity Hero;
     private Entity Enemy;
     private gameState state = gameState.COMBAT;
-    
-    private JPanel gameScreen;
 
     
     public enum gameState {
@@ -26,28 +19,27 @@ public class GamePanel extends JPanel {
     
     public GamePanel(){
         Hero = new Entity ();
-        gameScreen = new JPanel ();
     }
     
     public boolean createCharacter (String name, int choosenClass){
         Hero.setName(name);
 
         switch(choosenClass){
-            case 0: // Warrior class
+            case 0: // Red
                 Hero.setMaxHealth(300);
                 Hero.setMaxMana(50);
                 Hero.setDamageMax(50);
                 Hero.setDamageMin(40);
                 break;
                 
-            case 1: // Ranger Class
+            case 1: // Yellow
                 Hero.setMaxHealth(200);
                 Hero.setMaxMana(100);
                 Hero.setDamageMax(70);
                 Hero.setDamageMin(60);
                 break;
                 
-            case 2: //Mage Class
+            case 2: // Blue
                 Hero.setMaxHealth(100);
                 Hero.setMaxMana(300);
                 Hero.setDamageMax(60);
@@ -76,6 +68,8 @@ public class GamePanel extends JPanel {
                 
                 //Sample enemy for test purposes
                 Enemy = new Entity("Enemy", 50, 20, 20, 15, 10, 100);
+                
+                
                 break;
             case SHOP:
                 break;
@@ -85,10 +79,12 @@ public class GamePanel extends JPanel {
     }
     
     
-    public void update(){
+    public void update(int action){
         switch (state){
             case COMBAT:
+                if (action == 0){
                 
+                };
                 break;
             case SHOP:                
                 break;
