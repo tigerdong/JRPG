@@ -1,25 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package squarepg;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- *
- * @author Cathy
- */
-public class InteractionPanel {
-    private JButton LTButton;
-    private JButton LBButton;    
-    private JButton RTButton;
-    private JButton RBButton;
-    private JPanel Interactions;
+
+public class InteractionPanel extends JPanel{
+    
+    private JButton LTButton; //1
+    private JButton LBButton; //2
+    private JButton RTButton; //3
+    private JButton RBButton; //4
+    private gameState state = gameState.COMBAT;
+    private int action = 0; //Action communication with Gamepanel, number depends on button number pressed
     
     public enum gameState {
         COMBAT,
@@ -28,12 +20,14 @@ public class InteractionPanel {
     } 
     
     InteractionPanel(){
-        Interactions = new JPanel (new GridLayout(0, 2));
-    
+        
     }
     
+    public void setState(gameState state){
+        this.state = state;
+    }
     
-    public void init(gameState state) {
+    public void init() {
         switch (state){
             case COMBAT:
                 LTButton = new JButton ("Attack");
@@ -41,18 +35,17 @@ public class InteractionPanel {
                 RTButton = new JButton ("Items");
                 RBButton = new JButton ("Flee");
                 
-                Interactions.add(LTButton);
-                Interactions.add(LBButton);
-                Interactions.add(RTButton);
-                Interactions.add(RBButton);
-                
+                add(LTButton);
+                add(LBButton);
+                add(RTButton);
+                add(RBButton);
                 
                 CombatAction combatAction = new CombatAction();
                 LTButton.addActionListener(combatAction);
                 LBButton.addActionListener(combatAction);
                 RTButton.addActionListener(combatAction);
                 RBButton.addActionListener(combatAction);
-
+                
                 break;
             case SHOP:
                 break;
@@ -62,10 +55,10 @@ public class InteractionPanel {
                 RTButton = new JButton ("Character");
                 RBButton = new JButton ("Skill Tree");
                 
-                Interactions.add(LTButton);
-                Interactions.add(LBButton);
-                Interactions.add(RTButton);
-                Interactions.add(RBButton);
+                add(LTButton);
+                add(LBButton);
+                add(RTButton);
+                add(RBButton);
                 
                 
                 WorldAction worldAction = new WorldAction();
@@ -79,10 +72,10 @@ public class InteractionPanel {
     }
     
     
-    public void update(gameState state){
+    public void update(){
         switch (state){
             case COMBAT:
-                
+                    
                 break;
             case SHOP:                
                 break;
@@ -93,7 +86,7 @@ public class InteractionPanel {
     
     }
     
-    public void draw(gameState state){
+    public void draw(){
         switch(state){
             case COMBAT:
                 break;
@@ -119,7 +112,7 @@ public class InteractionPanel {
                 
             }
             if (event.getSource() == RBButton){//Flee button
-            
+                
             }
         }
     }
