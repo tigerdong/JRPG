@@ -21,11 +21,9 @@ public class SquarePG extends JFrame {
     private JLabel replaceMe = new JLabel("OPTIONS WILL GO HERE ;-)");
     
     private JPanel aboutPanel = new JPanel();
-    private JLabel aboutLabel = new JLabel("<html><center>ABOUT<br><br>Authors:<br>Tiger Dong, Cathy Hua<br><br>Last Revised:<br>DATE HERE<br><br>Compiler:<br>JDK 1.8.0_101<br><br>Version:<br>Java SE 8</html>");
+    private JLabel aboutLabel = new JLabel("<html><center>ABOUT<br><br>Authors:<br>Tiger Dong, Cathy Hua<br><br>Last Revised:<br>DATE HERE<br><br>Compiler:<br>JDK 1.8.0_101<br><br>Version:<br>Java SE 8<br> <br></html>");
     
     private JPanel selectionPanel = new JPanel();
-    private JPanel characterPanel = new JPanel();
-    private JPanel namePanel = new JPanel();
     private JLabel selectionLabel = new JLabel("Yeah, why not?");
     private JLabel nameLabel = new JLabel("Square's Name:");
     private JTextField nameTextField = new JTextField(15);
@@ -52,31 +50,59 @@ public class SquarePG extends JFrame {
         Container contentPane = getContentPane();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
         
-        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.PAGE_AXIS));
-        menuPanel.add(playButton);
-        menuPanel.add(optionsButton);
-        menuPanel.add(aboutButton);
+        menuPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(3, 0, 0, 0);
+        c.fill = GridBagConstraints.HORIZONTAL;        
+        c.gridx = 0;
+        c.gridy = 0;
+        menuPanel.add(playButton, c);
+        c.gridy = 1;
+        menuPanel.add(optionsButton, c);
+        c.gridy = 2;
+        menuPanel.add(aboutButton, c);
+            
         
-        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
-        optionsPanel.add(replaceMe);
-        optionsPanel.add(back1Button);
+        optionsPanel.setLayout(new GridBagLayout());
+        c.gridy = 0;
+        optionsPanel.add(replaceMe, c);
+        c.fill = GridBagConstraints.NONE;
+        c.gridy = 2;
+        optionsPanel.add(back1Button, c);
         
-        aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.PAGE_AXIS));
-        aboutPanel.add(aboutLabel);
-        aboutPanel.add(back2Button);
+        aboutPanel.setLayout(new GridBagLayout());
+        c.gridy = 0;
+        aboutPanel.add(aboutLabel, c);
+        c.gridy = 2;
+        aboutPanel.add(back2Button, c);
+                
+               
         
-        selectionPanel.setLayout(new BoxLayout(selectionPanel, BoxLayout.PAGE_AXIS));
-        characterPanel.setLayout(new BoxLayout(characterPanel, BoxLayout.LINE_AXIS));
-        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.LINE_AXIS));
-        characterPanel.add(redButton);
-        characterPanel.add(yellowButton);
-        characterPanel.add(blueButton);
-        namePanel.add(nameLabel);
-        namePanel.add(nameTextField);
-        selectionPanel.add(selectionLabel);
-        selectionPanel.add(characterPanel);
-        selectionPanel.add(namePanel);
-        selectionPanel.add(startButton);
+        selectionPanel.setLayout(new GridBagLayout());
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridy = 0;
+        c.gridx = 1;
+        c.gridwidth = 3;
+        c.anchor = GridBagConstraints.CENTER;
+        selectionPanel.add(selectionLabel, c);
+        c.gridwidth = 1;
+        c.gridy = 1;
+        c.gridx = 0;
+        selectionPanel.add(redButton, c);
+        c.gridx = 1;
+        selectionPanel.add(yellowButton,c);
+        c.gridx = 2;
+        selectionPanel.add(blueButton,c);
+        c.gridy = 2;
+        c.gridx = 0;
+        selectionPanel.add(nameLabel, c);
+        c.gridx = 1;
+        c.gridwidth = 2;
+        selectionPanel.add(nameTextField, c);
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 3;
+        selectionPanel.add(startButton, c);
         startButton.setEnabled(false);
         nameTextField.setEditable(false);
         nameTextField.setMaximumSize(nameTextField.getPreferredSize());
