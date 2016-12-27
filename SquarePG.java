@@ -41,7 +41,7 @@ public class SquarePG extends JFrame {
     public static void main(String args[]) {
         SquarePG game = new SquarePG();
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        game.setSize(1000, 750);
+        game.setSize(500, 750);
         game.setVisible(true);
     }
     
@@ -49,7 +49,7 @@ public class SquarePG extends JFrame {
     public SquarePG() {
         super("SquarePG");
         Container contentPane = getContentPane();
-        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
+        contentPane.setLayout(new BorderLayout());
         
         menuPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -76,8 +76,6 @@ public class SquarePG extends JFrame {
         aboutPanel.add(aboutLabel, c);
         c.gridy = 2;
         aboutPanel.add(back2Button, c);
-                
-               
         
         selectionPanel.setLayout(new GridBagLayout());
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -150,6 +148,7 @@ public class SquarePG extends JFrame {
             
             //gamePanel.update();
             //gamePanel.draw();
+            
             // Delay for each frame
             time = (1000/FPS) - (System.currentTimeMillis()-time);
             
