@@ -10,10 +10,10 @@ public class InteractionPanel extends JPanel{
     private JButton LBButton = new JButton(); //2
     private JButton RTButton = new JButton(); //3
     private JButton RBButton = new JButton(); //4
-    private gameState state = gameState.COMBAT;
+    private GameState state = GameState.COMBAT;
     private int buttonPressed = 0; //Action communication with Gamepanel, number depends on button number pressed
     
-    public enum gameState {
+    public enum GameState {
         COMBAT,
         SHOP,
         WORLDMAP;
@@ -31,11 +31,11 @@ public class InteractionPanel extends JPanel{
         init();
     }
     
-    public void setState(gameState state){
+    public void setState(GameState state){
         this.state = state;
     }
     
-    public gameState getState(){
+    public GameState getState(){
         return state;
     }
     
@@ -88,15 +88,33 @@ public class InteractionPanel extends JPanel{
         }
     }
     
+    
     public void update(){
         switch (state){
-            case COMBAT:  
+            case COMBAT:
+                    
                 break;
             case SHOP:                
                 break;
             case WORLDMAP:
                 break;
+        
         }
+    
+    }
+    
+    public void draw(){
+        switch(state){
+            case COMBAT:
+                break;
+            case SHOP:
+                break;
+            case WORLDMAP:
+                break;
+        
+        
+        }
+    
     }
     
     private class CombatAction implements ActionListener {
@@ -112,7 +130,7 @@ public class InteractionPanel extends JPanel{
             }
             if (event.getSource() == RBButton){//Flee button
                 buttonPressed = 4;
-                state = gameState.WORLDMAP;
+                state = GameState.WORLDMAP;
             }
         }
     }
@@ -130,7 +148,7 @@ public class InteractionPanel extends JPanel{
             }
             if (event.getSource() == RBButton){//Return to WorldMap button
                 buttonPressed = 4;
-                state = gameState.WORLDMAP;
+                state = GameState.WORLDMAP;
             }
         }
     }
@@ -140,7 +158,7 @@ public class InteractionPanel extends JPanel{
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == LTButton) {//Shop button
                 buttonPressed = 1;
-                state = gameState.SHOP;
+                state = GameState.SHOP;
             }
             if (event.getSource() == LBButton) {//Items button
                 buttonPressed = 2;
@@ -155,4 +173,3 @@ public class InteractionPanel extends JPanel{
     }
     
 }
-
