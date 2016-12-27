@@ -77,7 +77,7 @@ public class SquarePG extends JFrame {
         c.gridy = 2;
         aboutPanel.add(back2Button, c);
         
-        selectionPanel.setLayout(new GridBagLayout());
+       selectionPanel.setLayout(new GridBagLayout());
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridy = 0;
         c.gridx = 1;
@@ -87,13 +87,17 @@ public class SquarePG extends JFrame {
         c.gridwidth = 1;
         c.gridy = 1;
         c.gridx = 0;
+        c.ipadx = 23;
         selectionPanel.add(redButton, c);
         c.gridx = 1;
+        c.ipadx = 25;
         selectionPanel.add(yellowButton,c);
         c.gridx = 2;
+        c.ipadx = 40;
         selectionPanel.add(blueButton,c);
         c.gridy = 2;
         c.gridx = 0;
+        c.ipadx = 5;
         selectionPanel.add(nameLabel, c);
         c.gridx = 1;
         c.gridwidth = 2;
