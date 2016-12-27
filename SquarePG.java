@@ -197,10 +197,7 @@ public class SquarePG extends JFrame {
                 add(gamePanel, BorderLayout.CENTER);
                 add(interactionPanel, BorderLayout.SOUTH);
                 
-                interactionPanel.init();
                 gamePanel.init();
-                interactionPanel.setLayout(new GridLayout(0, 2));
-                interactionPanel.setPreferredSize(new Dimension(500, 200));
                 
                 gamePanel.createCharacter(playerName, playerClass);
                 runGameLoop();
