@@ -88,33 +88,15 @@ public class InteractionPanel extends JPanel{
         }
     }
     
-    
     public void update(){
         switch (state){
-            case COMBAT:
-                    
+            case COMBAT:  
                 break;
             case SHOP:                
                 break;
             case WORLDMAP:
                 break;
-        
         }
-    
-    }
-    
-    public void draw(){
-        switch(state){
-            case COMBAT:
-                break;
-            case SHOP:
-                break;
-            case WORLDMAP:
-                break;
-        
-        
-        }
-    
     }
     
     private class CombatAction implements ActionListener {
