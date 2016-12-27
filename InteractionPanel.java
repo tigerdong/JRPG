@@ -20,7 +20,15 @@ public class InteractionPanel extends JPanel{
     } 
     
     InteractionPanel(){
+        setLayout (new GridLayout(0,2));
+        setPreferredSize(new Dimension (500, 200));
         
+        add(LTButton);
+        add(LBButton);
+        add(RTButton);
+        add(RBButton);
+        
+        init();
     }
     
     public void setState(gameState state){
@@ -30,15 +38,10 @@ public class InteractionPanel extends JPanel{
     public void init() {
         switch (state){
             case COMBAT:
-                LTButton = new JButton ("Attack");
-                LBButton = new JButton ("Abilities");
-                RTButton = new JButton ("Items");
-                RBButton = new JButton ("Flee");
-                
-                add(LTButton);
-                add(LBButton);
-                add(RTButton);
-                add(RBButton);
+                LTButton.setText("Attack");
+                LBButton.setText("Abilities");
+                RTButton.setText("Items");
+                RBButton.setText("Flee");
                 
                 CombatAction combatAction = new CombatAction();
                 LTButton.addActionListener(combatAction);
@@ -50,16 +53,10 @@ public class InteractionPanel extends JPanel{
             case SHOP:
                 break;
             case WORLDMAP:
-                LTButton = new JButton ("World Map");
-                LBButton = new JButton ("Items");
-                RTButton = new JButton ("Character");
-                RBButton = new JButton ("Skill Tree");
-                
-                add(LTButton);
-                add(LBButton);
-                add(RTButton);
-                add(RBButton);
-                
+                LTButton.setText("World Map");
+                LBButton.setText("Items");
+                RTButton.setText("Character");
+                RBButton.setText("Skill Tree");
                 
                 WorldAction worldAction = new WorldAction();
                 LTButton.addActionListener(worldAction);
@@ -135,4 +132,6 @@ public class InteractionPanel extends JPanel{
     }
     
 }
+
+
 
