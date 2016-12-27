@@ -14,9 +14,6 @@ public class SquarePG extends JFrame {
     private JButton back1Button = new JButton("Back");
     private JButton back2Button = new JButton("Back");
     
-    //private GamePanel gamePanel;
-    //private InteractionsPanel interactionsPanel;
-    
     private JPanel optionsPanel = new JPanel();
     private JLabel replaceMe = new JLabel("OPTIONS WILL GO HERE ;-)");
     
