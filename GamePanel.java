@@ -5,18 +5,18 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.Set;
 
 public class GamePanel extends JPanel {
     private Entity hero;
-    private Entity Enemy;
-    private gameState state = gameState.COMBAT;
+    private Entity enemy;
+    private GameState state = GameState.COMBAT;
     
+    private boolean isEnemyTurn = false;
     private final int RED = 0;
     private final int YELLOW = 1;
     private final int BLUE = 2;
     
-    public enum gameState {
+    public enum GameState {
         COMBAT,
         SHOP,
         WORLDMAP;
@@ -27,15 +27,16 @@ public class GamePanel extends JPanel {
         setBackground(Color.WHITE);
     }
     
-    public boolean createCharacter (String name, int choosenClass){
+    public boolean createCharacter (String name, int chosenClass){
         hero.setName(name);
-
-        switch(choosenClass){
+        
+        switch(chosenClass){
             case RED: // Red
                 hero.setMaxHealth(300);
                 hero.setMaxMana(50);
                 hero.setDamageMax(50);
                 hero.setDamageMin(40);
+                hero.setCurrentHealth(hero.getMaxHealth());
                 break;
                 
             case YELLOW: // Yellow
@@ -43,6 +44,7 @@ public class GamePanel extends JPanel {
                 hero.setMaxMana(100);
                 hero.setDamageMax(70);
                 hero.setDamageMin(60);
+                hero.setCurrentHealth(hero.getMaxHealth());
                 break;
                 
             case BLUE: // Blue
@@ -50,6 +52,7 @@ public class GamePanel extends JPanel {
                 hero.setMaxMana(300);
                 hero.setDamageMax(60);
                 hero.setDamageMin(50);
+                hero.setCurrentHealth(hero.getMaxHealth());
                 break;
                 
             default: //Error
@@ -63,16 +66,12 @@ public class GamePanel extends JPanel {
         return true;
     }
     
-    private void setState(gameState state) {
-        this.state = state;
-    }
-    
     public void init() {
         switch (state) {
             case COMBAT:
                 
                 // Sample enemy for test purposes
-                Enemy = new Entity("Enemy", 50, 20, 20, 15, 10, 100);
+                enemy = new Entity("Enemy", 100, 20, 20, 15, 10, 100);
                 
                 break;
             case SHOP:
@@ -87,7 +86,8 @@ public class GamePanel extends JPanel {
             case COMBAT:
                 switch (action) {
                 case 1:
-                    //hero.setState(1);
+                    hero.setState(1);
+                    isEnemyTurn = true;
                     break;
                 case 2:
                     //
@@ -97,6 +97,22 @@ public class GamePanel extends JPanel {
                 case 4:
                     break;
             }
+                if (hero.isFinishedAttacking()) {
+                    hero.stopAttacking();
+                    enemy.inflict(hero.getDamage());
+                    System.out.println("Enemy is now at " + enemy.getCurrentHealth() + " HP");
+                }
+                if (enemy.isFinishedAttacking()) {
+                    enemy.stopAttacking();
+                    hero.inflict(enemy.getDamage());
+                    System.out.println("Hero is now at " + hero.getCurrentHealth() + " HP");
+                }
+                if (isEnemyTurn) {
+                    enemy.setState(1);
+                    isEnemyTurn = false;
+                }
+                hero.update();
+                enemy.update();
                 break;
             case SHOP:                
                 break;
@@ -106,8 +122,11 @@ public class GamePanel extends JPanel {
     }
     
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         switch (state) {
             case COMBAT:
+                hero.draw(g);
+                enemy.draw(g);
                 break;
             case SHOP:
                 break;
