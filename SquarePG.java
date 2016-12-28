@@ -140,8 +140,8 @@ public class SquarePG extends JFrame {
         while(isRunning){
             long time = System.currentTimeMillis();
             
-            //gamePanel.update();
-            //gamePanel.draw();
+            updateGame();
+            drawGame();
             
             // Delay for each frame
             time = (1000/FPS) - (System.currentTimeMillis()-time);
@@ -153,6 +153,16 @@ public class SquarePG extends JFrame {
                 catch (Exception e){}
             }
         }
+    }
+    
+    private void updateGame() {
+        gamePanel.update(interactionPanel.getButtonPressed());
+        //interactionPanel.
+        interactionPanel.clearButtonPressed();
+    }
+    
+    private void drawGame() {
+        gamePanel.repaint();
     }
     
     // Private inner class for ActionListener event handling
@@ -196,8 +206,6 @@ public class SquarePG extends JFrame {
                 remove(selectionPanel);
                 add(gamePanel, BorderLayout.CENTER);
                 add(interactionPanel, BorderLayout.SOUTH);
-                
-                gamePanel.init();
                 
                 gamePanel.createCharacter(playerName, playerClass);
                 runGameLoop();
