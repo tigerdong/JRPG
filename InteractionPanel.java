@@ -49,7 +49,6 @@ public class InteractionPanel extends JPanel{
     
     public void clearButtonPressed (){
         buttonPressed = 0 ;
-        buttonLayer = 0;
     }
     
     public int getButtonPressed (){
@@ -63,6 +62,7 @@ public class InteractionPanel extends JPanel{
         RBButton.setEnabled(true);
         
         clearButtonPressed();
+        buttonLayer = 0;
         
         switch (state){
             case COMBAT:
@@ -92,12 +92,12 @@ public class InteractionPanel extends JPanel{
             buttonLayer =1;
             switch (state){
                 case COMBAT:
-                    if (buttonPressed != 4){
-                        LTButton.setText("Use");
+                    if (buttonPressed != 4){ //unblock when there are actual attacks to choose from
+                        /*LTButton.setText("Use");
                         RTButton.setText ("Info");
                         RBButton.setText("Back");
                         LBButton.setText("");
-                        LBButton.setEnabled(false);
+                        LBButton.setEnabled(false);*/
                     }
                     else {
                         state = gameState.WORLDMAP;
