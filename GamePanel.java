@@ -18,6 +18,7 @@ public class GamePanel extends JPanel implements KeyListener{
     private final int BLUE = 2;
     
     private Image test;
+    private int mapNumber = 5;
     
     public GamePanel(){
         hero = new Entity();
@@ -152,6 +153,7 @@ public class GamePanel extends JPanel implements KeyListener{
                 }
                 break;
             case WORLDMAP:
+                this.requestFocus(true);
                 switch (action){
                 case 1:
                     break;
@@ -168,7 +170,14 @@ public class GamePanel extends JPanel implements KeyListener{
     }
     
     public void up (){
-        hero.setPosY(hero.getPosY() - 50);
+        if (hero.getPosY() <= 0 &&(mapNumber >=4)){
+            mapNumber -= 3;
+            hero.setPosY(450);
+        }
+        else if (hero.getPosY() > 0){
+            hero.setPosY(hero.getPosY() - 50);
+        }
+
         if (stepTrigger()){
             state = GameState.COMBAT;
             init();
@@ -176,21 +185,42 @@ public class GamePanel extends JPanel implements KeyListener{
     }
     
     public void down(){
-        hero.setPosY(hero.getPosY() + 50);
+        if (hero.getPosY() >=450 &&(mapNumber <7)){
+            mapNumber += 3;
+            hero.setPosY(0);
+        }
+        else if (hero.getPosY() < 450){
+            hero.setPosY(hero.getPosY() + 50);
+        }
+        
         if (stepTrigger()){
             state = GameState.COMBAT;
             init();
         }
     }
     public void left(){
-        hero.setPosX(hero.getPosX() - 50);
+        if (hero.getPosX() <= 0 &&(mapNumber %3 != 1)){
+            mapNumber--;
+            hero.setPosX(450);
+        }
+        else if (hero.getPosX() >= 50){
+            hero.setPosX(hero.getPosX() - 50);
+        }
+        
         if (stepTrigger()){
             state = GameState.COMBAT;
             init();
         }
     }
     public void right (){
-        hero.setPosX(hero.getPosX() + 50);
+        if (hero.getPosX() >= 450 &&(mapNumber% 3 != 0)){
+            mapNumber++;
+            hero.setPosX(0);
+        }
+        else if (hero.getPosX() < 450){
+            hero.setPosX(hero.getPosX() + 50);
+        }
+        
         if (stepTrigger()){
             state = GameState.COMBAT;
             init();
@@ -228,10 +258,45 @@ public class GamePanel extends JPanel implements KeyListener{
             case SHOP:
                 break;
             case WORLDMAP:
+                ImageIcon map;
+                Graphics2D g2d = (Graphics2D)g;
+                switch(mapNumber){
+                    case 1:
+                        map = new ImageIcon(this.getClass().getResource("Test1.png"));
+                        break;
+                    case 2:
+                        map = new ImageIcon(this.getClass().getResource("Test2.png"));
+                        break;
+                    case 3:
+                        map = new ImageIcon(this.getClass().getResource("Test3.png"));
+                        break;
+                    case 4:
+                        map = new ImageIcon(this.getClass().getResource("Test4.png"));
+                        break;
+                    case 5:
+                        map = new ImageIcon(this.getClass().getResource("Test5.png"));
+                        break;
+                    case 6:
+                        map = new ImageIcon(this.getClass().getResource("Test6.png"));
+                        break;
+                    case 7:
+                        map = new ImageIcon(this.getClass().getResource("Test7.png"));
+                        break;
+                    case 8:
+                        map = new ImageIcon(this.getClass().getResource("Test8.png"));
+                        break;
+                    case 9:
+                        map = new ImageIcon(this.getClass().getResource("Test9.png"));
+                        break;
+                    default:
+                        map = new ImageIcon(this.getClass().getResource("Test1.png"));
+                }
+                g2d.drawImage(map.getImage(), 0, 0, this);
+                
                 ImageIcon thing = new ImageIcon(this.getClass().getResource("Test.png"));
                 test = thing.getImage();
         
-                Graphics2D g2d = (Graphics2D)g;
+
                 g2d.drawImage(test, hero.getPosX(), hero.getPosY(), this);
                 break;
         }
@@ -246,3 +311,4 @@ public class GamePanel extends JPanel implements KeyListener{
         return false;
     }
 }
+
