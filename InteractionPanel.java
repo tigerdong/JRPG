@@ -1,4 +1,3 @@
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -11,16 +10,10 @@ public class InteractionPanel extends JPanel{
     private JButton LBButton = new JButton(); //2
     private JButton RTButton = new JButton(); //3
     private JButton RBButton = new JButton(); //4
-    private gameState state = gameState.COMBAT;
+    private GameState state = GameState.WORLDMAP;
     private int buttonPressed; //Action communication with Gamepanel, number depends on button number pressed
     private int buttonLayer;
     private CombatAction combatAction = new CombatAction();
-    
-    public enum gameState {
-        COMBAT,
-        SHOP,
-        WORLDMAP;
-    } 
     
     InteractionPanel(){
         setLayout (new GridLayout(0,2));
@@ -39,11 +32,14 @@ public class InteractionPanel extends JPanel{
         init();
     }
     
-    public void setState(gameState state){
-        this.state = state;
+    public void setState(GameState state){
+        if (this.state != state){
+            this.state = state;
+            init();
+        }
     }
     
-    public gameState getState(){
+    public GameState getState(){
         return state;
     }
     
@@ -54,6 +50,11 @@ public class InteractionPanel extends JPanel{
     public int getButtonPressed (){
         return buttonPressed;
     }
+    
+    public int getButtonLayer(){
+        return buttonLayer;
+    }
+    
     
     public void init() {
         LTButton.setEnabled(true);
@@ -89,20 +90,17 @@ public class InteractionPanel extends JPanel{
     
     public void update(){
         if (buttonLayer == 0){
-            buttonLayer =1;
+            buttonLayer = 1;
             switch (state){
                 case COMBAT:
-                    if (buttonPressed != 4){ //unblock when there are actual attacks to choose from
-                        /*LTButton.setText("Use");
+                    /*if (buttonPressed != 4){
+                        LTButton.setText("Use");
                         RTButton.setText ("Info");
                         RBButton.setText("Back");
                         LBButton.setText("");
-                        LBButton.setEnabled(false);*/
+                        LBButton.setEnabled(false);
                     }
-                    else {
-                        state = gameState.WORLDMAP;
-                        init();
-                    }
+                    */
                 break;
             case SHOP:
                 RBButton.setText("Back");
@@ -117,8 +115,6 @@ public class InteractionPanel extends JPanel{
                         LTButton.setText("Sell");
                         break;
                     case 4:
-                        state = gameState.WORLDMAP;
-                        init();
                 }
                 break;
             case WORLDMAP:
@@ -130,8 +126,6 @@ public class InteractionPanel extends JPanel{
                     case 3:
                         break;
                     case 4:
-                        state = gameState.SHOP;
-                        init();
                         break;
                 }
                 break;
@@ -143,7 +137,7 @@ public class InteractionPanel extends JPanel{
     }
     
     private class CombatAction implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
+        public void actionPerformed(ActionEvent event) {            
             if (event.getSource() == LTButton) {//Attack button
                 buttonPressed = 1;
                 update();  
@@ -163,4 +157,3 @@ public class InteractionPanel extends JPanel{
         }
     }
 }
-
