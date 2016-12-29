@@ -155,9 +155,10 @@ public class SquarePG extends JFrame {
         }
     }
     
-    private void updateGame() {
+   private void updateGame() {
         gamePanel.update(interactionPanel.getButtonPressed());
         //interactionPanel.
+        interactionPanel.setState(gamePanel.getState());
         interactionPanel.clearButtonPressed();
     }
     
