@@ -41,6 +41,7 @@ public class SquarePG extends JFrame {
     public static void main(String args[]) {
         SquarePG game = new SquarePG();
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        game.setResizable(false);
         game.setSize(500, 750);
         game.setVisible(true);
     }
