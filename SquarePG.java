@@ -1,3 +1,5 @@
+package SquarePG;
+
 // Authors: Tiger Dong, Cathy Hua
 // Date: yes please
 // Description: 
@@ -156,8 +158,8 @@ public class SquarePG extends JFrame {
         }
     }
     
-   private void updateGame() {
-        gamePanel.update(interactionPanel.getButtonPressed());
+    private void updateGame() {
+        gamePanel.update(interactionPanel.getButtonPressed(), interactionPanel.getButtonLayer());
         //interactionPanel.
         interactionPanel.setState(gamePanel.getState());
         interactionPanel.clearButtonPressed();
