@@ -1,4 +1,4 @@
-package squarepg;
+package SquarePG;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,11 @@ public class Equipment {
     }
     
     //Returns the equipment object in question
-    public Item getEquipment (int listNum){
+    public Item getItem (int listNum){
         return list.get(listNum);
+    }
+    
+    public ArrayList getList (){
+        return list;
     }
 }
