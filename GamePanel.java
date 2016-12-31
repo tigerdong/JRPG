@@ -21,6 +21,13 @@ public class GamePanel extends JPanel implements KeyListener{
     private int mapNumber = 5;
     private ImageIcon map;
     
+    private Consumables consumablesList = new Consumables();
+    private Equipment equipmentList = new Equipment();
+    
+    private JPanel shopMenu = new JPanel();
+    private JLabel message = new JLabel("Hello there, what would you like to buy?");
+    
+    
     public GamePanel(){
         hero = new Entity();
         setBackground(Color.WHITE);
@@ -77,14 +84,24 @@ public class GamePanel extends JPanel implements KeyListener{
     }
     
     public void init() {
+        
         switch (state) {
             case COMBAT:
                 
                 // Sample enemy for test purposes
-                enemy = new Entity("Enemy", 100, 20, 20, 15, 10, 100);
+                enemy = new Entity("Enemy", 100, 20, 20, 15, 10, 100, 100);
                 
                 break;
             case SHOP:
+                message.setFont(new Font(message.getFont().getName(), Font.PLAIN, 20));
+                shopMenu.add(message);
+                shopMenu.setAlignmentX(0);
+                shopMenu.setAlignmentY(400);
+                shopMenu.setPreferredSize(new Dimension (450, 100));
+                
+                shopMenu.setVisible(true);
+                add(shopMenu);
+                
                 break;
             case WORLDMAP:
                 this.requestFocus(true);
@@ -94,6 +111,7 @@ public class GamePanel extends JPanel implements KeyListener{
     
     public void update(int action) {
         if (action == 4){
+            remove(shopMenu);
             switch (state){
                 case COMBAT: case SHOP:
                     state = GameState.WORLDMAP;
@@ -137,6 +155,7 @@ public class GamePanel extends JPanel implements KeyListener{
                 hero.update();
                 enemy.update();
                 if (enemy.getCurrentHealth() == 0){
+                    hero.gainGold(enemy.getGold());
                     state = GameState.WORLDMAP;
                     init();
                 }
@@ -211,11 +230,11 @@ public class GamePanel extends JPanel implements KeyListener{
     public void up (){
         if (hero.getPosY() <= 0 &&(mapNumber >=4)){
             mapNumber -= 3;
-            hero.setPosY(450);
+            hero.setPosY(465);
             changeMap();
         }
         else if (hero.getPosY() > 0){
-            hero.setPosY(hero.getPosY() - 50);
+            hero.setPosY(hero.getPosY() - 5);
         }
 
         if (stepTrigger()){
@@ -225,13 +244,13 @@ public class GamePanel extends JPanel implements KeyListener{
     }
     
     public void down(){
-        if (hero.getPosY() >=450 &&(mapNumber <7)){
+        if (hero.getPosY() >=465 &&(mapNumber <7)){
             mapNumber += 3;
             hero.setPosY(0);
             changeMap();
         }
-        else if (hero.getPosY() < 450){
-            hero.setPosY(hero.getPosY() + 50);
+        else if (hero.getPosY() < 465){
+            hero.setPosY(hero.getPosY() + 5);
         }
         
         if (stepTrigger()){
@@ -242,11 +261,11 @@ public class GamePanel extends JPanel implements KeyListener{
     public void left(){
         if (hero.getPosX() <= 0 &&(mapNumber %3 != 1)){
             mapNumber--;
-            hero.setPosX(450);
+            hero.setPosX(445);
             changeMap();
         }
-        else if (hero.getPosX() >= 50){
-            hero.setPosX(hero.getPosX() - 50);
+        else if (hero.getPosX() > 0 ){
+            hero.setPosX(hero.getPosX() - 5);
         }
         
         if (stepTrigger()){
@@ -255,13 +274,13 @@ public class GamePanel extends JPanel implements KeyListener{
         }
     }
     public void right (){
-        if (hero.getPosX() >= 450 &&(mapNumber% 3 != 0)){
+        if (hero.getPosX() >= 445 &&(mapNumber% 3 != 0)){
             mapNumber++;
             hero.setPosX(0);
             changeMap();
         }
-        else if (hero.getPosX() < 450){
-            hero.setPosX(hero.getPosX() + 50);
+        else if (hero.getPosX() < 445){
+            hero.setPosX(hero.getPosX() + 5);
         }
         
         if (stepTrigger()){
@@ -316,7 +335,7 @@ public class GamePanel extends JPanel implements KeyListener{
     private boolean stepTrigger (){
         int randomNum = ThreadLocalRandom.current().nextInt(0, 101);
         
-        if (randomNum < 20){
+        if (randomNum < 5){ 
             return true;
         }
         return false;
