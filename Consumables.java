@@ -1,4 +1,4 @@
-package squarepg;
+package SquarePG;
 
 import java.util.ArrayList;
 
@@ -23,5 +23,9 @@ public class Consumables {
     public Item getItem (int ListNum){
         return list.get(ListNum);
     } 
+    
+    public ArrayList getList (){
+        return list;
+    }
 
 }
