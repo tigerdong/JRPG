@@ -1,4 +1,4 @@
-package squarepg;
+package SquarePG;
 
 public class Item {
     private int gainHealth, gainMP;
