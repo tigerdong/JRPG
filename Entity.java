@@ -5,6 +5,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Entity {
@@ -14,10 +15,12 @@ public class Entity {
     private int maxMana, currentMana;
     private int damageMax, damageMin;
     private int posX, posY;
+    private int gold;
     private int state = 0;
     private boolean finishedAttacking = false;
     private Random random = new Random();
-    //private ArrayList inventory = new ArrayList();
+    private Consumables consumables = new Consumables();
+    private Equipment equipment = new Equipment();
     
     // Default constructor
     Entity() {
@@ -26,12 +29,13 @@ public class Entity {
         maxMana = 0;
         damageMax = 0;
         damageMin = 0;
-        posX = 0;
-        posY = 0;
+        posX = 100;
+        posY = 100;
+        gold = 1000;
     }
     
     // Also constructor
-    Entity(String name, int maxHealth, int maxMana, int damageMax, int damageMin, int posX, int posY) {
+    Entity(String name, int maxHealth, int maxMana, int damageMax, int damageMin, int posX, int posY, int gold) {
         this.name = name;
         this.maxHealth = maxHealth;
         this.currentHealth = maxHealth;
@@ -40,6 +44,74 @@ public class Entity {
         this.damageMin = damageMin;
         this.posX = posX;
         this.posY = posY;
+        this.gold = gold;
+    }
+    
+    //buying equipment will automatically be equipt, only one of each kind can be bought
+    public boolean buyEquipment (int equipNum, int numBought){
+        if (equipment.getEquipment(equipNum).getBuyPrice()> gold || equipment.getEquipment(equipNum).getStock() > 0 || numBought != 1){
+            return false;
+        }
+        else{
+            equipment.getEquipment(equipNum).changeStock(numBought);
+            gold -= equipment.getEquipment(equipNum).getBuyPrice();
+            maxHealth += equipment.getEquipment(equipNum).getDEF();
+            damageMax += equipment.getEquipment(equipNum).getATK();
+            damageMin += equipment.getEquipment(equipNum).getATK();
+            maxMana += equipment.getEquipment(equipNum).getMAG();
+        }
+        return true;
+    }
+    
+    public boolean sellEquipment(int equipNum){
+        if (equipment.getEquipment(equipNum).getStock() < 1){
+            System.out.println("How do you sell something you don't have?");
+            return false;
+        }
+        else {
+            maxHealth -= equipment.getEquipment(equipNum).getDEF();
+            damageMax -= equipment.getEquipment(equipNum).getATK();
+            damageMin -= equipment.getEquipment(equipNum).getATK();
+            maxMana -= equipment.getEquipment(equipNum).getMAG();
+            equipment.getEquipment(equipNum).changeStock(-1);
+            gold += equipment.getEquipment(equipNum).getSellPrice();
+        }
+        return true;
+    }
+    
+    public boolean buyConsumables(int itemNum, int numBought){
+        if (numBought*consumables.getItem(itemNum).getBuyPrice() > gold){
+            System.out.println("Sorry, debt does not exist in this game");
+            return false;
+        }
+        else {
+            consumables.getItem(itemNum).changeStock(numBought);
+            gold -= consumables.getItem(itemNum).getBuyPrice()*numBought;
+        }
+        return true;
+    }
+    
+    public boolean sellConsumables(int itemNum, int numSell){
+        if (numSell > consumables.getItem(itemNum).getStock()){
+            System.out.println("Can't sell something you don't have");
+            return false;
+        }
+        else {
+            consumables.getItem(itemNum).changeStock(-1*numSell);
+            gold += consumables.getItem(itemNum).getSellPrice()*numSell;
+        }
+        return true;
+    }
+    
+    public boolean gainGold (int income){
+        if (gold + income >= 0){
+            gold += income;
+        }
+        else {
+            gold = 0;
+            return false;
+        }
+        return true;
     }
     
     //
@@ -106,6 +178,10 @@ public class Entity {
     //
     public int getPosY() {
         return posY;
+    }
+    
+    public int getGold(){
+        return gold;
     }
     
     //
@@ -178,5 +254,6 @@ public class Entity {
     
     //
     public void draw(Graphics g) {
+        
     }
 }
