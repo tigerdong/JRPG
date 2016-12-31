@@ -1,3 +1,5 @@
+package SquarePG;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -11,8 +13,8 @@ public class InteractionPanel extends JPanel{
     private JButton RTButton = new JButton(); //3
     private JButton RBButton = new JButton(); //4
     private GameState state = GameState.WORLDMAP;
-    private int buttonPressed; //Action communication with Gamepanel, number depends on button number pressed
-    private int buttonLayer;
+    private int buttonPressed =0; //Action communication with Gamepanel, number depends on button number pressed
+    private int buttonLayer =0;
     private CombatAction combatAction = new CombatAction();
     
     InteractionPanel(){
@@ -33,7 +35,7 @@ public class InteractionPanel extends JPanel{
     }
     
     public void setState(GameState state){
-        if (this.state != state){
+        if (this.state != state || buttonPressed == 4){
             this.state = state;
             init();
         }
@@ -76,21 +78,20 @@ public class InteractionPanel extends JPanel{
                 LTButton.setText("Consumables");
                 LBButton.setText("Sell Items");
                 RTButton.setText("Equipment");
-                RBButton.setText("World Map");
+                RBButton.setText("Map");
                 break;
             case WORLDMAP:
-                LTButton.setText("Skill Tree");
+                LTButton.setText("Character");
                 LBButton.setText("Items");
-                RTButton.setText("Character");
+                RTButton.setText("World Map");
                 RBButton.setText("Shop");
                 break;
         }
     }
     
     
-    public void update(){
+    private void update(){
         if (buttonLayer == 0){
-            buttonLayer = 1;
             switch (state){
                 case COMBAT:
                     /*if (buttonPressed != 4){
@@ -114,26 +115,44 @@ public class InteractionPanel extends JPanel{
                     case 2:
                         LTButton.setText("Sell");
                         break;
-                    case 4:
                 }
                 break;
             case WORLDMAP:
                 switch(buttonPressed){
                     case 1:
+                        RBButton.setText("Back");
+                        LBButton.setText("");
+                        LTButton.setText("");
+                        RTButton.setText("");
+                        LBButton.setEnabled(false);
+                        LTButton.setEnabled(false);
+                        RTButton.setEnabled(false);
                         break;
                     case 2:
+                        RBButton.setText("Back");
+                        LTButton.setText("Use");
+                        RTButton.setText("Info");
+                        LBButton.setText("");
+                        LBButton.setEnabled(false);
                         break;
                     case 3:
                         break;
-                    case 4:
-                        break;
                 }
                 break;
-            }        
+            }
+            buttonLayer++;
         }
-        else if (buttonLayer == 1 && buttonPressed == 4){
+        else if (buttonPressed == 4){
+            buttonLayer--;
+        }
+        else {
+            buttonLayer++;
+        }
+        /*
+        else if (buttonLayer > 0 && buttonPressed == 4){
             init();
-        }
+        }*/
+        
     }
     
     private class CombatAction implements ActionListener {
@@ -154,6 +173,8 @@ public class InteractionPanel extends JPanel{
                 buttonPressed = 4;
                 update();
             }
+            
         }
     }
 }
+
