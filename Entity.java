@@ -1,3 +1,5 @@
+package SquarePG;
+
 // Authors: Tiger Dong, Cathy Hua
 // Date: when we finish
 // Description: 
@@ -49,32 +51,32 @@ public class Entity {
     
     //buying equipment will automatically be equipt, only one of each kind can be bought
     public boolean buyEquipment (int equipNum, int numBought){
-        if (equipment.getEquipment(equipNum).getBuyPrice()> gold || equipment.getEquipment(equipNum).getStock() > 0 || numBought != 1){
+        if (equipment.getItem(equipNum).getBuyPrice()> gold || equipment.getItem(equipNum).getStock() > 0 || numBought != 1){
             return false;
         }
         else{
-            equipment.getEquipment(equipNum).changeStock(numBought);
-            gold -= equipment.getEquipment(equipNum).getBuyPrice();
-            maxHealth += equipment.getEquipment(equipNum).getDEF();
-            damageMax += equipment.getEquipment(equipNum).getATK();
-            damageMin += equipment.getEquipment(equipNum).getATK();
-            maxMana += equipment.getEquipment(equipNum).getMAG();
+            equipment.getItem(equipNum).changeStock(numBought);
+            gold -= equipment.getItem(equipNum).getBuyPrice();
+            maxHealth += equipment.getItem(equipNum).getDEF();
+            damageMax += equipment.getItem(equipNum).getATK();
+            damageMin += equipment.getItem(equipNum).getATK();
+            maxMana += equipment.getItem(equipNum).getMAG();
         }
         return true;
     }
     
     public boolean sellEquipment(int equipNum){
-        if (equipment.getEquipment(equipNum).getStock() < 1){
+        if (equipment.getItem(equipNum).getStock() < 1){
             System.out.println("How do you sell something you don't have?");
             return false;
         }
         else {
-            maxHealth -= equipment.getEquipment(equipNum).getDEF();
-            damageMax -= equipment.getEquipment(equipNum).getATK();
-            damageMin -= equipment.getEquipment(equipNum).getATK();
-            maxMana -= equipment.getEquipment(equipNum).getMAG();
-            equipment.getEquipment(equipNum).changeStock(-1);
-            gold += equipment.getEquipment(equipNum).getSellPrice();
+            maxHealth -= equipment.getItem(equipNum).getDEF();
+            damageMax -= equipment.getItem(equipNum).getATK();
+            damageMin -= equipment.getItem(equipNum).getATK();
+            maxMana -= equipment.getItem(equipNum).getMAG();
+            equipment.getItem(equipNum).changeStock(-1);
+            gold += equipment.getItem(equipNum).getSellPrice();
         }
         return true;
     }
@@ -144,6 +146,21 @@ public class Entity {
         return (currentMana == 0) ? (false) : (true);
     }
     
+    public Consumables getConsumables(){
+        return consumables;
+    }
+    
+    public Item getConsumables(int itemNum){
+        return consumables.getItem(itemNum);
+    }
+    
+    public Equipment getEquipment(){
+        return equipment;
+    }
+    
+    public Item getEquipment(int itemNum){
+        return equipment.getItem(itemNum);
+    }
     //
     public int getDamage() {
         return (damageMin+random.nextInt(damageMax-damageMin));
@@ -162,6 +179,10 @@ public class Entity {
     //
     public int getMaxHealth() {
         return maxHealth;
+    }
+    
+    public int getCurrentMana(){
+        return currentMana;
     }
     
     //
@@ -191,6 +212,10 @@ public class Entity {
     
     public void setCurrentHealth(int currentHealth) {
         this.currentHealth = currentHealth;
+    }
+    
+    public void setCurrentMana(int currentMana){
+        this.currentMana = currentMana;
     }
     
     //
