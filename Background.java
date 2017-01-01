@@ -1,7 +1,7 @@
 //
 //
 //
-package SquarePG;
+package squarepg;
 
 import java.awt.*;
 import java.awt.event.*;
