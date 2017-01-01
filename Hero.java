@@ -2,11 +2,13 @@
 //
 //
 
-package SquarePG;
+package squarepg;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import java.awt.geom.*;
 
 public class Hero extends Entity {
     private ImageIcon heroAvatar;
@@ -46,8 +48,7 @@ public class Hero extends Entity {
         if (equipment.getItem(equipNum).getStock() < 1){
             System.out.println("How do you sell something you don't have?");
             return false;
-        }
-        else {
+        } else {
             maxHealth -= equipment.getItem(equipNum).getDEF();
             damageMax -= equipment.getItem(equipNum).getATK();
             damageMin -= equipment.getItem(equipNum).getATK();
@@ -159,6 +160,15 @@ public class Hero extends Entity {
         
         switch (gameState) {
             case COMBAT:
+                g2d.setPaint(Color.WHITE);
+                g2d.fill(new Rectangle2D.Double(300, 40, 175, 45));
+                g2d.setPaint(Color.GRAY);
+                g2d.fill(new Rectangle2D.Double(310, 60, 155, 15));
+                g2d.setPaint(Color.RED);
+                g2d.fill(new Rectangle2D.Double(310, 60, (currentHealth*1.0/maxHealth*155), 15));
+                g2d.setPaint(Color.BLACK);
+                g2d.drawString(name, 310, 55);
+                g2d.drawString((currentHealth+"/"+maxHealth+" HP"), 312, 72);
                 g2d.drawImage(heroAvatar.getImage(), 350, 250, null);
                 break;
             case WORLDMAP:
