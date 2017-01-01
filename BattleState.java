@@ -1,4 +1,4 @@
-package SquarePG;
+package squarepg;
 
 public enum BattleState {
     IDLE,
