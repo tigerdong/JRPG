@@ -1,4 +1,4 @@
-package SquarePG;
+package squarepg;
 
 import java.util.ArrayList;
 
