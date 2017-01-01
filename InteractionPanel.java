@@ -1,4 +1,4 @@
-package SquarePG;
+package squarepg;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
