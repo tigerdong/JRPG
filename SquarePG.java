@@ -1,4 +1,4 @@
-package SquarePG;
+package squarepg;
 
 // Authors: Tiger Dong, Cathy Hua
 // Date: yes please
