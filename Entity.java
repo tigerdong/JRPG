@@ -1,8 +1,8 @@
-package SquarePG;
-
 // Authors: Tiger Dong, Cathy Hua
 // Date: when we finish
 // Description: 
+
+package squarepg;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -11,7 +11,7 @@ import java.util.Random;
 
 abstract class Entity {
     // Variable declaration
-    private String name;
+    protected String name;
     protected int maxHealth, currentHealth;
     protected int maxMana, currentMana;
     protected int damageMax, damageMin;
