@@ -7,18 +7,13 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements KeyListener{
-    private Entity hero;
+    private Hero hero;
     private Entity enemy;
-    private GameState state = GameState.WORLDMAP;
-    
+    private GameState gameState = GameState.WORLDMAP;
+    private Background background = new Background("map5");
     private boolean isEnemyTurn = false;
-    private final int RED = 0;
-    private final int YELLOW = 1;
-    private final int BLUE = 2;
-    
-    private ImageIcon heroAvatar;
     private int mapNumber = 5;
-    private ImageIcon map;
+    
     private JPanel worldMapMenu = new JPanel();
     private JLabel mapMessage = new JLabel("");
     
@@ -30,9 +25,12 @@ public class GamePanel extends JPanel implements KeyListener{
     private JLabel itemsSale = new JLabel("");
     private int previousButtonPressed = 0;
     
+    private final int RED = 0;
+    private final int YELLOW = 1;
+    private final int BLUE = 2;
     
     public GamePanel(){
-        hero = new Entity();
+        hero = new Hero();
         setBackground(Color.WHITE);
         addKeyListener(this);
         setFocusable(true);
@@ -54,7 +52,7 @@ public class GamePanel extends JPanel implements KeyListener{
     }
     
     public GameState getState(){
-        return state;
+        return gameState;
     }
     
     public boolean createCharacter (String name, int chosenClass){
@@ -66,7 +64,7 @@ public class GamePanel extends JPanel implements KeyListener{
                 hero.setMaxMana(50);
                 hero.setDamageMax(50);
                 hero.setDamageMin(40);
-                heroAvatar = new ImageIcon(this.getClass().getResource("red.png"));
+                hero.setHeroAvatar(RED);
                 break;
                 
             case YELLOW: // Yellow
@@ -74,7 +72,7 @@ public class GamePanel extends JPanel implements KeyListener{
                 hero.setMaxMana(100);
                 hero.setDamageMax(70);
                 hero.setDamageMin(60);
-                heroAvatar = new ImageIcon(this.getClass().getResource("yellow.png"));
+                hero.setHeroAvatar(YELLOW);
                 break;
                 
             case BLUE: // Blue
@@ -82,7 +80,7 @@ public class GamePanel extends JPanel implements KeyListener{
                 hero.setMaxMana(300);
                 hero.setDamageMax(60);
                 hero.setDamageMin(50);
-                heroAvatar = new ImageIcon(this.getClass().getResource("blue.png"));
+                hero.setHeroAvatar(BLUE);
                 break;
                 
             default: //Error
@@ -99,12 +97,11 @@ public class GamePanel extends JPanel implements KeyListener{
     }
     
     public void init() {
-        
-        switch (state) {
+        switch (gameState) {
             case COMBAT:
                 
                 // Sample enemy for test purposes
-                enemy = new Entity("Enemy", 100, 20, 20, 15, 10, 100, 100);
+                enemy = new Enemy("Enemy", 100, 20, 20, 15, 100);
                 
                 break;
             case SHOP:
@@ -123,137 +120,139 @@ public class GamePanel extends JPanel implements KeyListener{
         if (action == 4 && buttonLayer == 1){
             shopMenu.setVisible(false);
             worldMapMenu.setVisible(false);
-            switch (state){
+            switch (gameState) {
                 case COMBAT: case SHOP:
-                    state = GameState.WORLDMAP;
+                    gameState = GameState.WORLDMAP;
+                    hero.setGameState(GameState.WORLDMAP);
                     break;
                 case WORLDMAP:
-                    state = GameState.SHOP;
+                    gameState = GameState.SHOP;
+                    hero.setGameState(GameState.SHOP);
                     break;
             }
-            init();        
-        }
-        else {
-            switch (state) {
-            case COMBAT:
-                switch (action) {
-                case 1:
-                    hero.setState(1);
-                    isEnemyTurn = true;
+            init();
+        } else {
+            switch (gameState) {
+                case COMBAT:
+                    switch (action) {
+                    case 1:
+                        hero.setBattleState(BattleState.ATTACKING);
+                        isEnemyTurn = true;
+                        break;
+                    case 2:
+                        //
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                }
+                    if (hero.isFinishedAttacking()) {
+                        hero.stopAttacking();
+                        enemy.inflict(hero.getDamage());
+                        System.out.println("Enemy is now at " + enemy.getCurrentHealth() + " HP");
+                    }
+                    if (enemy.isFinishedAttacking()) {
+                        enemy.stopAttacking();
+                        hero.inflict(enemy.getDamage());
+                        System.out.println("Hero is now at " + hero.getCurrentHealth() + " HP");
+                    }
+                    if (isEnemyTurn) {
+                        enemy.setBattleState(BattleState.ATTACKING);
+                        isEnemyTurn = false;
+                    }
+                    hero.update();
+                    enemy.update();
+                    if (enemy.getCurrentHealth() == 0){
+                        hero.gainGold(enemy.getGold());
+                        gameState = GameState.WORLDMAP;
+                        hero.setGameState(GameState.WORLDMAP);
+                        init();
+                    }
+                    if (hero.getCurrentHealth() == 0){
+                        System.out.println(hero.getName() + " is DEAD!");
+                        System.exit(0);
+                    }
                     break;
-                case 2:
-                    //
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-            }
-                if (hero.isFinishedAttacking()) {
-                    hero.stopAttacking();
-                    enemy.inflict(hero.getDamage());
-                    System.out.println("Enemy is now at " + enemy.getCurrentHealth() + " HP");
-                }
-                if (enemy.isFinishedAttacking()) {
-                    enemy.stopAttacking();
-                    hero.inflict(enemy.getDamage());
-                    System.out.println("Hero is now at " + hero.getCurrentHealth() + " HP");
-                }
-                if (isEnemyTurn) {
-                    enemy.setState(1);
-                    isEnemyTurn = false;
-                }
-                hero.update();
-                enemy.update();
-                if (enemy.getCurrentHealth() == 0){
-                    hero.gainGold(enemy.getGold());
-                    state = GameState.WORLDMAP;
-                    init();
-                }
-                if (hero.getCurrentHealth() == 0){
-                    System.out.println(hero.getName() + " is DEAD!");
-                    System.exit(0);
-                }
-                break;
-            case SHOP:
-                switch (action){
-                case 1:
-                    shopMenu.removeAll();
-                    if (buttonLayer == 1){
-                        itemsSale = new JLabel("Buy consumables: " + "        gold: " + hero.getGold());
-                        shopMenu.add(itemsSale);
-                        for (int i = 0; i < consumablesList.getList().size(); i++){
-                            itemsSale = new JLabel(consumablesList.getItem(i).getName() + "  -" + consumablesList.getItem(i).getBuyPrice() + " gold");
+                case SHOP:
+                    switch (action) {
+                    case 1:
+                        shopMenu.removeAll();
+                        if (buttonLayer == 1){
+                            itemsSale = new JLabel("Buy consumables: " + "        gold: " + hero.getGold());
+                            shopMenu.add(itemsSale);
+                            for (int i = 0; i < consumablesList.getList().size(); i++){
+                                itemsSale = new JLabel(consumablesList.getItem(i).getName() + "  -" + consumablesList.getItem(i).getBuyPrice() + " gold");
+                                shopMenu.add(itemsSale);
+                            }
+                        }
+                        shopMenu.setVisible(true);
+                        break;
+                    case 2:
+                        shopMenu.removeAll();
+                        if (buttonLayer ==1){
+                            itemsSale = new JLabel("Sell items:");
+                            shopMenu.add(itemsSale);
+                            for (int i = 0; i < consumablesList.getList().size(); i++){
+                                itemsSale= new JLabel(hero.getConsumables().getItem(i).getName() + "   x " + hero.getConsumables().getItem(i).getStock());
+                                shopMenu.add(itemsSale);
+                            }
+                        }
+                        shopMenu.setVisible(true);
+                        break;
+                    case 3:
+                        shopMenu.removeAll();
+                        if (buttonLayer == 1){
+                            itemsSale.setText("Case 3");
                             shopMenu.add(itemsSale);
                         }
-                    }
-                    shopMenu.setVisible(true);
-                    break;
-                case 2:
-                    shopMenu.removeAll();
-                    if (buttonLayer ==1){
-                        itemsSale = new JLabel("Sell items:");
-                        shopMenu.add(itemsSale);
-                        for (int i = 0; i < consumablesList.getList().size(); i++){
-                            itemsSale= new JLabel(hero.getConsumables().getItem(i).getName() + "   x " + hero.getConsumables().getItem(i).getStock());
-                            shopMenu.add(itemsSale);
-                        }
-                    }
-                    shopMenu.setVisible(true);
-                    break;
-                case 3:
-                    shopMenu.removeAll();
-                    if (buttonLayer == 1){
-                        itemsSale.setText("Case 3");
-                        shopMenu.add(itemsSale);
-                    }
-                    break;
-                case 4:
-                    shopMenu.removeAll();
-                    shopMenu.add(message);
-                    shopMenu.setVisible(true);
-                    break;
+                        break;
+                    case 4:
+                        shopMenu.removeAll();
+                        shopMenu.add(message);
+                        shopMenu.setVisible(true);
+                        break;
                 }
-                break;
-            case WORLDMAP:
-                this.requestFocus(true);
-                switch (action){
-                case 1:
-                    worldMapMenu.removeAll();
-                    mapMessage = new JLabel ("Character Name: " + hero.getName());
-                    worldMapMenu.add(mapMessage);
-                    mapMessage = new JLabel ("Health: " + hero.getCurrentHealth() + " /" + hero.getMaxHealth());
-                    worldMapMenu.add(mapMessage);
-                    mapMessage = new JLabel ("Mana: " + hero.getCurrentMana() + " /" + hero.getMaxMana());
-                    worldMapMenu.add(mapMessage);
-                    mapMessage = new JLabel ("Equipment: ");
-                    worldMapMenu.add(mapMessage);
-                    for (int i = 0; i < hero.getEquipment().getList().size(); i++){
-                        if (hero.getEquipment().getItem(i).getStock() > 0){
-                            mapMessage = new JLabel (hero.getEquipment().getItem(i).getName());
-                        }
-                    }
-                    worldMapMenu.setVisible(true);
                     break;
-                case 2:
-                    worldMapMenu.removeAll();
-                    mapMessage = new JLabel("Items: ");
-                    worldMapMenu.add(mapMessage);
-                    for (int i = 0; i < hero.getConsumables().getList().size(); i++){
-                        if (hero.getConsumables().getItem(i).getStock() > 0){
-                            mapMessage = new JLabel(hero.getConsumables().getItem(i).getName() + "   x " + hero.getConsumables().getItem(i).getStock());
+                case WORLDMAP:
+                    this.requestFocus(true);
+                    switch (action){
+                        case 1:
+                            worldMapMenu.removeAll();
+                            mapMessage = new JLabel ("Character Name: " + hero.getName());
                             worldMapMenu.add(mapMessage);
-                        }
+                            mapMessage = new JLabel ("Health: " + hero.getCurrentHealth() + " /" + hero.getMaxHealth());
+                            worldMapMenu.add(mapMessage);
+                            mapMessage = new JLabel ("Mana: " + hero.getCurrentMana() + " /" + hero.getMaxMana());
+                            worldMapMenu.add(mapMessage);
+                            mapMessage = new JLabel ("Equipment: ");
+                            worldMapMenu.add(mapMessage);
+                            for (int i = 0; i < hero.getEquipment().getList().size(); i++){
+                                if (hero.getEquipment().getItem(i).getStock() > 0){
+                                    mapMessage = new JLabel (hero.getEquipment().getItem(i).getName());
+                                }
+                            }
+                            worldMapMenu.setVisible(true);
+                            break;
+                        case 2:
+                            worldMapMenu.removeAll();
+                            mapMessage = new JLabel("Items: ");
+                            worldMapMenu.add(mapMessage);
+                            for (int i = 0; i < hero.getConsumables().getList().size(); i++){
+                                if (hero.getConsumables().getItem(i).getStock() > 0){
+                                    mapMessage = new JLabel(hero.getConsumables().getItem(i).getName() + "   x " + hero.getConsumables().getItem(i).getStock());
+                                    worldMapMenu.add(mapMessage);
+                                }
+                            }
+                            worldMapMenu.setVisible(true);                    
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            worldMapMenu.setVisible(false);
+                            break;
                     }
-                    worldMapMenu.setVisible(true);                    
                     break;
-                case 3:
-                    break;
-                case 4:
-                    worldMapMenu.setVisible(false);
-                    break;
-                }
-                break;
             }
         }
         if (action != 0)
@@ -261,42 +260,12 @@ public class GamePanel extends JPanel implements KeyListener{
         
     }
     
-    public void changeMap(){
-        switch (mapNumber){
-        case 1:
-            map = new ImageIcon(this.getClass().getResource("map1.png"));
-            break;
-        case 2:
-            map = new ImageIcon(this.getClass().getResource("map2.png"));
-            break;
-        case 3:
-            map = new ImageIcon(this.getClass().getResource("map3.png"));
-            break;
-        case 4:
-            map = new ImageIcon(this.getClass().getResource("map4.png"));
-            break;
-        case 5:
-            map = new ImageIcon(this.getClass().getResource("map5.png"));
-            break;
-        case 6:
-            map = new ImageIcon(this.getClass().getResource("map6.png"));
-            break;
-        case 7:
-            map = new ImageIcon(this.getClass().getResource("map7.png"));
-            break;
-        case 8:
-            map = new ImageIcon(this.getClass().getResource("map8.png"));
-            break;
-        case 9:
-            map = new ImageIcon(this.getClass().getResource("map9.png"));
-            break;
-        default:
-            map = new ImageIcon(this.getClass().getResource("map1.png"));
-        }
+    public void changeMap() {
+        background.setBackground("map"+mapNumber);
     }
     
     public void up (){
-        if (hero.getPosY() <= 0 &&(mapNumber >=4)){
+        if (hero.getPosY() <= 0 && (mapNumber >= 4)){
             mapNumber -= 3;
             hero.setPosY(465);
             changeMap();
@@ -304,9 +273,10 @@ public class GamePanel extends JPanel implements KeyListener{
         else if (hero.getPosY() > 0){
             hero.setPosY(hero.getPosY() - 5);
         }
-
+        
         if (stepTrigger()){
-            state = GameState.COMBAT;
+            gameState = GameState.COMBAT;
+            hero.setGameState(GameState.COMBAT);
             init();
         }
     }
@@ -322,7 +292,8 @@ public class GamePanel extends JPanel implements KeyListener{
         }
         
         if (stepTrigger()){
-            state = GameState.COMBAT;
+            gameState = GameState.COMBAT;
+            hero.setGameState(GameState.COMBAT);
             init();
         }
     }
@@ -337,7 +308,8 @@ public class GamePanel extends JPanel implements KeyListener{
         }
         
         if (stepTrigger()){
-            state = GameState.COMBAT;
+            gameState = GameState.COMBAT;
+            hero.setGameState(GameState.COMBAT);
             init();
         }
     }
@@ -352,13 +324,14 @@ public class GamePanel extends JPanel implements KeyListener{
         }
         
         if (stepTrigger()){
-            state = GameState.COMBAT;
+            gameState = GameState.COMBAT;
+            hero.setGameState(GameState.COMBAT);
             init();
         }
     }
-        
+    
     public void keyPressed (KeyEvent e){
-        if (state == GameState.WORLDMAP){
+        if (gameState == GameState.WORLDMAP){
             int code = e.getKeyCode();
             if (code == KeyEvent.VK_UP || code == KeyEvent.VK_W){
                 up();
@@ -377,25 +350,23 @@ public class GamePanel extends JPanel implements KeyListener{
     
     public void keyTyped(KeyEvent e){}
     public void keyReleased(KeyEvent e){}
-
+    
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D)g;
-        switch (state) {
+        
+        background.draw(g);
+        switch (gameState) {
             case COMBAT:
-                hero.draw(g);
                 enemy.draw(g);
                 break;
             case SHOP:
-                ImageIcon shop;
-                shop = new ImageIcon(this.getClass().getResource("shop.png"));
-                g2d.drawImage(shop.getImage(), 0, 0, this);
+                background.setBackground("shop");
                 break;
             case WORLDMAP:
-                g2d.drawImage(map.getImage(), 0, 0, this);
-                g2d.drawImage(heroAvatar.getImage(), hero.getPosX(), hero.getPosY(), this);
+                background.setBackground("map"+mapNumber);
                 break;
         }
+        hero.draw(g);
     }
     
     private boolean stepTrigger (){
