@@ -159,6 +159,7 @@ public class Hero extends Entity {
         
         switch (gameState) {
             case COMBAT:
+                g2d.drawImage(heroAvatar.getImage(), 350, 250, null);
                 break;
             case WORLDMAP:
                 g2d.drawImage(heroAvatar.getImage(), posX, posY, null);
