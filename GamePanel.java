@@ -1,18 +1,17 @@
-package SquarePG;
+package squarepg;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.*;
-import java.util.ArrayList;
 
-public class GamePanel extends JPanel implements KeyListener{
+public class GamePanel extends JPanel implements KeyListener {
     private Hero hero;
     private Entity enemy;
     private GameState gameState = GameState.WORLDMAP;
-    private Background background = new Background("map5");
+    private Background background = new Background();
     private boolean isEnemyTurn = false;
-    private int mapNumber = 5;
+    private int mapNumber = 9;
     
     private JPanel worldMapMenu = new JPanel();
     private JLabel mapMessage = new JLabel("");
@@ -29,7 +28,7 @@ public class GamePanel extends JPanel implements KeyListener{
     private final int YELLOW = 1;
     private final int BLUE = 2;
     
-    public GamePanel(){
+    public GamePanel() {
         hero = new Hero();
         setBackground(Color.WHITE);
         addKeyListener(this);
@@ -117,7 +116,7 @@ public class GamePanel extends JPanel implements KeyListener{
     }
     
     public void update(int action, int buttonLayer) {
-        if (action == 4 && buttonLayer == 1){
+        if (action == 4 && buttonLayer == 1) {
             shopMenu.setVisible(false);
             worldMapMenu.setVisible(false);
             switch (gameState) {
@@ -150,14 +149,10 @@ public class GamePanel extends JPanel implements KeyListener{
                     if (hero.isFinishedAttacking()) {
                         hero.stopAttacking();
                         enemy.inflict(hero.getDamage());
-                        System.out.println("Enemy is now at " + enemy.getCurrentHealth() + " HP");
-                    }
-                    if (enemy.isFinishedAttacking()) {
+                    } if (enemy.isFinishedAttacking()) {
                         enemy.stopAttacking();
                         hero.inflict(enemy.getDamage());
-                        System.out.println("Hero is now at " + hero.getCurrentHealth() + " HP");
-                    }
-                    if (isEnemyTurn) {
+                    } if (isEnemyTurn) {
                         enemy.setBattleState(BattleState.ATTACKING);
                         isEnemyTurn = false;
                     }
@@ -257,31 +252,33 @@ public class GamePanel extends JPanel implements KeyListener{
         }
         if (action != 0)
             previousButtonPressed = action;
-        
     }
     
+    //
     public void changeMap() {
         background.setBackground("map"+mapNumber);
     }
     
-    public void up (){
-        if (hero.getPosY() <= 0 && (mapNumber >= 4)){
+    //
+    public void up() {
+        if (hero.getPosY() <= 0 && (mapNumber >= 4)) {
             mapNumber -= 3;
             hero.setPosY(465);
             changeMap();
         }
-        else if (hero.getPosY() > 0){
+        else if (hero.getPosY() > 0) {
             hero.setPosY(hero.getPosY() - 5);
         }
         
-        if (stepTrigger()){
+        if (stepTrigger()) {
             gameState = GameState.COMBAT;
             hero.setGameState(GameState.COMBAT);
             init();
         }
     }
     
-    public void down(){
+    //
+    public void down() {
         if (hero.getPosY() >=465 &&(mapNumber <7)){
             mapNumber += 3;
             hero.setPosY(0);
@@ -297,7 +294,9 @@ public class GamePanel extends JPanel implements KeyListener{
             init();
         }
     }
-    public void left(){
+    
+    //
+    public void left() {
         if (hero.getPosX() <= 0 &&(mapNumber %3 != 1)){
             mapNumber--;
             hero.setPosX(445);
@@ -313,7 +312,9 @@ public class GamePanel extends JPanel implements KeyListener{
             init();
         }
     }
-    public void right (){
+    
+    //
+    public void right() {
         if (hero.getPosX() >= 445 &&(mapNumber% 3 != 0)){
             mapNumber++;
             hero.setPosX(0);
@@ -330,6 +331,7 @@ public class GamePanel extends JPanel implements KeyListener{
         }
     }
     
+    //
     public void keyPressed (KeyEvent e){
         if (gameState == GameState.WORLDMAP){
             int code = e.getKeyCode();
