@@ -136,6 +136,13 @@ public class InteractionPanel extends JPanel{
                         LBButton.setEnabled(false);
                         break;
                     case 3:
+                        RBButton.setText("Back");
+                        LTButton.setText("");
+                        LTButton.setEnabled(false);
+                        RTButton.setText("");
+                        RTButton.setEnabled(false);
+                        LBButton.setText("");
+                        LBButton.setEnabled(false);
                         break;
                 }
                 break;
