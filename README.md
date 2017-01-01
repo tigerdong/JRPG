@@ -1,2 +1,0 @@
-# JRPG
-Nameless Game
