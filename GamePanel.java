@@ -1,17 +1,21 @@
 package squarepg;
 
+package SquarePG;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 import javax.swing.*;
+import java.util.ArrayList;
 
-public class GamePanel extends JPanel implements KeyListener {
+public class GamePanel extends JPanel implements KeyListener{
     private Hero hero;
     private Entity enemy;
     private GameState gameState = GameState.WORLDMAP;
-    private Background background = new Background();
+    private Background background = new Background("map5");
     private boolean isEnemyTurn = false;
     private int mapNumber = 9;
+    private Random random = new Random();
     
     private JPanel worldMapMenu = new JPanel();
     private JLabel mapMessage = new JLabel("");
@@ -23,18 +27,20 @@ public class GamePanel extends JPanel implements KeyListener {
     private JLabel message = new JLabel("Hello there, what would you like to buy?");
     private JLabel itemsSale = new JLabel("");
     private int previousButtonPressed = 0;
+    private int buttonLayer;
     
     private final int RED = 0;
     private final int YELLOW = 1;
     private final int BLUE = 2;
     
-    public GamePanel() {
+    public GamePanel(){
         hero = new Hero();
         setBackground(Color.WHITE);
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         changeMap();
+        
         shopMenu.setPreferredSize(new Dimension (450, 100));
         shopMenu.setLayout(new GridLayout(0, 1));
         shopMenu.setBackground(Color.WHITE);
@@ -96,6 +102,7 @@ public class GamePanel extends JPanel implements KeyListener {
     }
     
     public void init() {
+        previousButtonPressed = 0;
         switch (gameState) {
             case COMBAT:
                 
@@ -116,7 +123,7 @@ public class GamePanel extends JPanel implements KeyListener {
     }
     
     public void update(int action, int buttonLayer) {
-        if (action == 4 && buttonLayer == 1) {
+        if (action == 4 && buttonLayer == 1){
             shopMenu.setVisible(false);
             worldMapMenu.setVisible(false);
             switch (gameState) {
@@ -134,25 +141,29 @@ public class GamePanel extends JPanel implements KeyListener {
             switch (gameState) {
                 case COMBAT:
                     switch (action) {
-                    case 1:
-                        hero.setBattleState(BattleState.ATTACKING);
-                        isEnemyTurn = true;
-                        break;
-                    case 2:
-                        //
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                }
+                        case 1:
+                            hero.setBattleState(BattleState.ATTACKING);
+                            isEnemyTurn = true;
+                            break;
+                        case 2:
+                            //
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                    }
                     if (hero.isFinishedAttacking()) {
                         hero.stopAttacking();
                         enemy.inflict(hero.getDamage());
-                    } if (enemy.isFinishedAttacking()) {
+                        System.out.println("Enemy is now at " + enemy.getCurrentHealth() + " HP");
+                    }
+                    if (enemy.isFinishedAttacking()) {
                         enemy.stopAttacking();
                         hero.inflict(enemy.getDamage());
-                    } if (isEnemyTurn) {
+                        System.out.println("Hero is now at " + hero.getCurrentHealth() + " HP");
+                    }
+                    if (isEnemyTurn) {
                         enemy.setBattleState(BattleState.ATTACKING);
                         isEnemyTurn = false;
                     }
@@ -170,10 +181,12 @@ public class GamePanel extends JPanel implements KeyListener {
                     }
                     break;
                 case SHOP:
+                    this.requestFocus(true);
+                    shopMenu.setVisible(true);
                     switch (action) {
                     case 1:
-                        shopMenu.removeAll();
                         if (buttonLayer == 1){
+                            shopMenu.removeAll();
                             itemsSale = new JLabel("Buy consumables: " + "        gold: " + hero.getGold());
                             shopMenu.add(itemsSale);
                             for (int i = 0; i < consumablesList.getList().size(); i++){
@@ -181,31 +194,38 @@ public class GamePanel extends JPanel implements KeyListener {
                                 shopMenu.add(itemsSale);
                             }
                         }
-                        shopMenu.setVisible(true);
+                        shopMenu.validate();
                         break;
                     case 2:
-                        shopMenu.removeAll();
                         if (buttonLayer ==1){
+                            shopMenu.removeAll();
                             itemsSale = new JLabel("Sell items:");
                             shopMenu.add(itemsSale);
                             for (int i = 0; i < consumablesList.getList().size(); i++){
-                                itemsSale= new JLabel(hero.getConsumables().getItem(i).getName() + "   x " + hero.getConsumables().getItem(i).getStock());
+                                itemsSale= new JLabel(hero.getConsumables().getItem(i).getName() + "  x" + hero.getConsumables().getItem(i).getStock() + "   +" + hero.getConsumables().getItem(i).getSellPrice() + " gold");
+                                shopMenu.add(itemsSale);
+                            }
+                            for (int i = 0; i < equipmentList.getList().size(); i++){
+                                itemsSale = new JLabel(hero.getEquipment().getItem(i).getName() + "  x" + hero.getEquipment().getItem(i).getStock() + "    -" + hero.getEquipment().getItem(i).getSellPrice() + " gold");
+                            }
+                        }
+                        shopMenu.validate();
+                        break;
+                    case 3:
+                        if (buttonLayer == 1){
+                            shopMenu.removeAll();
+                            itemsSale.setText("Equipment:"); 
+                            shopMenu.add(itemsSale);
+                            for (int i = 0; i < equipmentList.getList().size(); i++){
+                                itemsSale = new JLabel(equipmentList.getItem(i).getName() + "   -" + equipmentList.getItem(i).getBuyPrice() + " gold");
                                 shopMenu.add(itemsSale);
                             }
                         }
-                        shopMenu.setVisible(true);
-                        break;
-                    case 3:
-                        shopMenu.removeAll();
-                        if (buttonLayer == 1){
-                            itemsSale.setText("Case 3");
-                            shopMenu.add(itemsSale);
-                        }
+                        shopMenu.validate();
                         break;
                     case 4:
                         shopMenu.removeAll();
                         shopMenu.add(message);
-                        shopMenu.setVisible(true);
                         break;
                 }
                     break;
@@ -228,18 +248,20 @@ public class GamePanel extends JPanel implements KeyListener {
                                 }
                             }
                             worldMapMenu.setVisible(true);
+                            worldMapMenu.validate();
                             break;
                         case 2:
                             worldMapMenu.removeAll();
                             mapMessage = new JLabel("Items: ");
                             worldMapMenu.add(mapMessage);
                             for (int i = 0; i < hero.getConsumables().getList().size(); i++){
-                                if (hero.getConsumables().getItem(i).getStock() > 0){
+                                //if (hero.getConsumables().getItem(i).getStock() > 0){
                                     mapMessage = new JLabel(hero.getConsumables().getItem(i).getName() + "   x " + hero.getConsumables().getItem(i).getStock());
                                     worldMapMenu.add(mapMessage);
-                                }
+                                //}
                             }
-                            worldMapMenu.setVisible(true);                    
+                            worldMapMenu.setVisible(true);     
+                            worldMapMenu.validate();
                             break;
                         case 3:
                             break;
@@ -250,35 +272,34 @@ public class GamePanel extends JPanel implements KeyListener {
                     break;
             }
         }
+        this.buttonLayer = buttonLayer;
         if (action != 0)
             previousButtonPressed = action;
+        
     }
     
-    //
     public void changeMap() {
         background.setBackground("map"+mapNumber);
     }
     
-    //
-    public void up() {
-        if (hero.getPosY() <= 0 && (mapNumber >= 4)) {
+    public void up (){
+        if (hero.getPosY() <= 0 && (mapNumber >= 4)){
             mapNumber -= 3;
             hero.setPosY(465);
             changeMap();
         }
-        else if (hero.getPosY() > 0) {
+        else if (hero.getPosY() > 0){
             hero.setPosY(hero.getPosY() - 5);
         }
         
-        if (stepTrigger()) {
+        if (stepTrigger()){
             gameState = GameState.COMBAT;
             hero.setGameState(GameState.COMBAT);
             init();
         }
     }
     
-    //
-    public void down() {
+    public void down(){
         if (hero.getPosY() >=465 &&(mapNumber <7)){
             mapNumber += 3;
             hero.setPosY(0);
@@ -295,8 +316,7 @@ public class GamePanel extends JPanel implements KeyListener {
         }
     }
     
-    //
-    public void left() {
+    public void left(){
         if (hero.getPosX() <= 0 &&(mapNumber %3 != 1)){
             mapNumber--;
             hero.setPosX(445);
@@ -312,9 +332,7 @@ public class GamePanel extends JPanel implements KeyListener {
             init();
         }
     }
-    
-    //
-    public void right() {
+    public void right (){
         if (hero.getPosX() >= 445 &&(mapNumber% 3 != 0)){
             mapNumber++;
             hero.setPosX(0);
@@ -331,7 +349,6 @@ public class GamePanel extends JPanel implements KeyListener {
         }
     }
     
-    //
     public void keyPressed (KeyEvent e){
         if (gameState == GameState.WORLDMAP){
             int code = e.getKeyCode();
@@ -346,6 +363,36 @@ public class GamePanel extends JPanel implements KeyListener {
             }
             if (code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_D){
                 right();
+            }
+        }
+        if (gameState == GameState.SHOP){
+            int code = e.getKeyCode();
+            if (code == KeyEvent.VK_1){
+                System.out.println("one");
+            }
+            if (code == KeyEvent.VK_2){
+                System.out.println("Two");
+            }
+            if (code == KeyEvent.VK_3){
+            
+            }
+            if (code == KeyEvent.VK_4){
+            
+            }
+            if (code == KeyEvent.VK_5){
+            
+            }
+            if (code == KeyEvent.VK_6){
+            
+            }
+            if (code == KeyEvent.VK_7){
+            
+            }
+            if (code == KeyEvent.VK_8){
+            
+            }
+            if (code == KeyEvent.VK_9){
+            
             }
         }
     }
@@ -372,9 +419,9 @@ public class GamePanel extends JPanel implements KeyListener {
     }
     
     private boolean stepTrigger (){
-        int randomNum = ThreadLocalRandom.current().nextInt(0, 101);
+        int randomNum = random.nextInt();
         
-        if (randomNum < 5){ 
+        if (randomNum < 100){ 
             return true;
         }
         return false;
