@@ -417,9 +417,9 @@ public class GamePanel extends JPanel implements KeyListener{
     }
     
     private boolean stepTrigger (){
-        int randomNum = random.nextInt();
+        int randomNum = random.nextInt(100);
         
-        if (randomNum < 100){ 
+        if (randomNum < 5){ 
             return true;
         }
         return false;
